@@ -40,7 +40,7 @@ h1 {
 }
 
 h1.name {
-    text-shadow: 2px 2px 2px #bbb;
+    /*text-shadow: 2px 2px 2px #bbb;*/
 }
 
 h2 {
@@ -295,10 +295,12 @@ p.link {
 p.link a {
     /*font-weight: bold;*/
     font-size: 120%;
-    text-shadow: 1px 1px 2px #bbb;
     vertical-align: middle;
 }
 
+p.link a:hover {
+    text-shadow: 1px 1px 2px #bbb;
+}
 
 .icon {
     height: 20px;
@@ -308,7 +310,7 @@ p.link a {
 
 p.bio {
     font-size: 110%;
-    text-shadow: 1px 1px 1px #bbb;
+    /*text-shadow: 1px 1px 1px #bbb;*/
     font-weight: 400;
 }
 
