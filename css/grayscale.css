@@ -354,10 +354,10 @@ img::-moz-selection {
     About section
 */
 .about-section {
-    width: 100%;
-    padding: 50px 0;
+    padding: 75px 0;
     color: #fff;
-    background: url(../img/climbing.png) no-repeat center center scroll;
+    /*background: url(../img/climbing.png) no-repeat center center scroll;*/
+    background: url(../img/hole.png) no-repeat center center scroll;
     background-color: #000;
     -webkit-background-size: cover;
     -moz-background-size: cover;

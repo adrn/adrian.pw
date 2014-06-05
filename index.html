@@ -72,6 +72,7 @@
         <!-- /.container -->
     </nav>
 
+    <!-- Intro -->
     <section class="full-page intro">
         <div class="section-body">
             <div class="container">
@@ -97,22 +98,28 @@
         </div>
     </section>
 
-    <section id="about" class="content-section text-center">
+    <!-- About -->
+    <section id="about" class="full-page">
         <div class="about-section">
             <div class="container">
-                <div class="col-lg-8 col-lg-offset-2 light">
-                    <p>NSF graduate research fellow at <a href="http://astro.columbia.edu">Columbia University</a></p>
-                    <p>Astrophysicist currently interested in tidal streams and Galactic dynamics</p>
-                    <p>Open source <a href="http://osrc.dfm.io/adrn">enthusiast</a>, hacker, <a href="https://github.com/adrn">developer</a></p>
-                    <p>Bassist in <a href="http://deathrayarch.bandcamp.com/releases">death ray architect</a>, avid traveler, enjoys <a href="http://www.flickr.com/photos/ap-w/">photography</a></p>
+                <div class="row">
+                    <div class="col-lg-8 col-lg-offset-2 light">
+                        <h2>Adrian M. Price-Whelan</h2>
+                        <hr width="25%" />
+                        <p>NSF graduate research fellow at <a href="http://astro.columbia.edu">Columbia University</a></p>
+                        <p>Astrophysicist currently interested in tidal streams and Galactic dynamics</p>
+                        <p>Open source <a href="http://osrc.dfm.io/adrn">enthusiast</a>, hacker, <a href="https://github.com/adrn">developer</a></p>
+                        <p>Bassist in <a href="http://deathrayarch.bandcamp.com/releases">death ray architect</a>, avid traveler, enjoys <a href="http://www.flickr.com/photos/ap-w/">photography</a></p>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
+    <!-- Writing -->
     <section id="writing" class="full-page">
         <div class="section-body">
-            <div class="container">
+            <div class="container" style="position: relative;">
                 <div class="row">
                     <div class="col-lg-8 col-lg-offset-2">
                         <h2 class="italic">Recent papers</h2>
@@ -192,33 +199,75 @@
     <script src="js/grayscale.js"></script>
 
     <script type="text/javascript">
-        $.ajax({
-            url: 'http://export.arxiv.org/api/query?search_query=au:price_whelan+cat:astro-ph&start=0&max_results=5&sortBy=submittedDate',
-            type: 'GET',
-            dataType: "xml",
-            success: function(xml) {
-                $(xml).find("entry").each(function(){
-                    var title = $(this).find("title").text().replace(/(\r\n|\n|\r)/gm,""),
-                        link = $(this).find("id").text();
-                    console.log(link);
 
+        // Load recent paper list
+        function get_paper_list(n) {
+            if (n == undefined) { n = 3; }
+
+            $.ajax({
+                url: 'http://export.arxiv.org/api/query?search_query=au:price_whelan+cat:astro-ph&start=0&max_results=100&sortBy=submittedDate', // or lastUpdatedDate
+                type: 'GET',
+                dataType: "xml",
+                async: false,
+                success: function(xml) {
+                    $("#recent-papers").empty();
+                    var num = 0;
+                    $(xml).find("entry").each(function(){
+                        var title = $(this).find("title").text().replace(/(\r\n|\n|\r)/gm,""),
+                            link = $(this).find("id").text(),
+                            rawDate = $(this).find("published").text(),
+                            firstAuthor = $(this).find("author").find("name").first().text()
+
+                        // Author stuff
+                        var lastName = firstAuthor.split(" ").slice(-1)[0];
+                        if (lastName.toLowerCase() != "price-whelan") {
+                            return;
+                        }
+                        var authorSpan = $('<span>');
+                        authorSpan.addClass("author");
+                        authorSpan.text(lastName + " et al.")
+
+                        // Date stuff
+                        var date = rawDate.split("T")[0].split("-");
+                        var dateSpan = $('<span>');
+                        dateSpan.addClass('date');
+                        dateSpan.text("(" + date[1] + "/" + date[0] + ")");
+
+                        // Main paragraph element
+                        var p = $('<p>');
+                        p.css("opacity", 0.);
+
+                        var a = $('<a>');
+                        a.attr("href", link);
+                        a.text(title);
+
+                        p.append(dateSpan);
+                        p.append(authorSpan);
+                        p.append("<br/>")
+                        p.append(a);
+                        $("#recent-papers").append(p);
+                        num = num + 1;
+
+                        p.animate({ opacity: 1}, 1000);
+
+                        if (num >= n) {
+                            return false;
+                        }
+                    });
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
                     var p = $('<p>');
-                    p.css("opacity", 0.);
-
-                    var a = $('<a>');
-                    a.attr("href", link);
-                    a.text(title);
-                    p.append(a);
+                    p.html("Unable to retrieve paper list!");
+                    p.addClass("error");
                     $("#recent-papers").append(p);
+                }
+            });
+        }
 
-                    p.animate({ opacity: 1}, 1000);
-                });
-            },
-            error: function (XMLHttpRequest, textStatus, errorThrown) {
-                console.log("ERROR");
-                console.log(textStatus);
-            }
+        $(document).ready(function() {
+            get_paper_list();
         });
+
     </script>
 
  </body>

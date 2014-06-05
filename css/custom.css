@@ -1,6 +1,11 @@
-.lighten-bg {
-    background: rgba(255,255,255,0.3);
-}
+.lighten-bg-10 { background: rgba(255,255,255,.1); }
+.lighten-bg-20 { background: rgba(255,255,255,.2); }
+.lighten-bg-30 { background: rgba(255,255,255,.3); }
+.lighten-bg-40 { background: rgba(255,255,255,.4); }
+.lighten-bg-50 { background: rgba(255,255,255,.5); }
+.lighten-bg-60 { background: rgba(255,255,255,.6); }
+.lighten-bg-70 { background: rgba(255,255,255,.7); }
+.lighten-bg-80 { background: rgba(255,255,255,.8); }
 
 .darken-bg-10 { background: rgba(0,0,0,0.1); }
 .darken-bg-20 { background: rgba(0,0,0,0.2); }
@@ -26,18 +31,25 @@
     opacity: 0.85;
 }
 
+#recent-papers {
+    text-align: left;
+}
+
 #recent-papers p {
     font-size: 14pt;
     font-weight: 200;
 }
 
+#recent-papers p .author { color: #dddddd; font-style: italic; }
+#recent-papers p .date { color: #888888; padding-right: 10px; }
+
 #recent-papers p a {
-    color: #dddddd;
+    color: #77BFF2;
 }
 
 #recent-papers p a:focus,
 #recent-papers p a:hover {
-    color: #77BFF2;
+    color: #dddddd;
 }
 
 .italic {
@@ -46,4 +58,11 @@
 
 #research row {
     vertical-align: top !important;
+}
+
+.error {
+    text-align: center;
+    color: #ca0020;
+    font-style: italic;
+    font-size: 18pt;
 }
