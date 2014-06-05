@@ -1,151 +1,226 @@
-<!doctype html>
-<html>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="chrome=1">
-        <title>adrn</title>
+<!DOCTYPE html>
+<html lang="en">
 
-        <link rel="stylesheet" href="stylesheets/styles.css">
-        <link rel="stylesheet" href="stylesheets/pygment_trac.css">
-        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-        <!--[if lt IE 9]>
-        <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-        <![endif]-->
-    </head>
-    <body>
-        <div class="wrapper">
-            <header>
-                <h1 class='name'>adrian m. price-whelan</h1>
-                
-                <!--<p style="text-align: center;" >
-                    <img src="images/apw_pupin.png" width=250px/>
-                </p>-->
-                
-                <p style="text-align: left; margin-left: 20px;" >
-                    <img src="images/sgr_blue.png" width=250px/>
-                </p>
-                
-                <hr />
-                <p></p>
-                
-                <p class="view link">
-                    <a href="cv.html" class='cv'>
-                        <img src='images/arrow.png' class='icon' />
-                        Curriculum Vitae
-                    </a>
-                </p>
-                <p class="view link">
-                    <a href="https://github.com/adrn">
-                        <img src='images/github.png' class='icon' />github/adrn
-                    </a>
-                </p>
-                <p class="view link">
-                    <a href="https://twitter.com/astrodrian">
-                        <img src='images/twitter.png' class='icon' />twitter/astrodrian
-                    </a>
-                </p>                
-                <p class="view link">
-                    <a href="http://arxiv.org/find/all/1/OR+au:price_whelan+all:+EXACT+price_whelan/0/1/0/all/0/1">
-                        <img src='images/open-access-logo.png' class='icon' />arXiv/price-whelan
-                    </a>
-                </p>
-                <p class="view link">
-                    <a href="http://apwhelan.blogspot.com/">
-                        <img src='images/blogger.png' class='icon' />blogger/adrn
-                    </a>
-                </p>
-                <p class="view link">
-                    <a href="www.last.fm/user/adrianpw">
-                        <img src='images/last-fm.png' class='icon' />last.fm/adrianpw
-                    </a>
-                </p>
-                <p class="view link">
-                    <a href="http://www.flickr.com/photos/ap-w/">
-                        <img src='images/flickr.png' class='icon' />flickr/apwhelan
-                    </a>
-                </p>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
 
-            </header>
-            <section>
-                <h3></h3>
+    <title>Adrian M. Price-Whelan</title>
 
-                <p class="bio">I'm an NSF graduate research fellow at <a href="http://astro.columbia.edu">Columbia University</a> working with <a href="http://www.astro.columbia.edu/~kvj/">Kathryn Johnston</a> on measuring the Milky Way potential using stellar debris in the Galactic halo. Before this, I worked for the <a href="http://sdss3.org">Sloan Digital Sky Survey</a> at NYU, and earned an Honors B.A. in Physics from NYU. When I'm not doing research or writing code, I'm probably still writing code, but also playing guitar, riding my bike, or taking photos.</p>
-                
-                <hr />
-                
-<!--<pre><code>$ cd your_repo_root/repo_name
-$ git fetch origin
-$ git checkout gh-pages
-</code></pre>-->
-                
-                <h3>Projects</h3>
-                
-                <ul>
-                    <li><a href="https://github.com/adrn/streams">streams</a> &mdash; measuring the Galactic potential with tidal streams</li>
-                    <li><a href="https://github.com/adrn/ptf">ptf microlensing</a> &mdash; searching for microlensing events in all-sky survey data</li>
-                    <li><a href="http://astropy.org">astropy</a> &mdash; all-purpose Python package for astronomy</li>
-                    <li><a href="https://github.com/adrn/AchtungCoaddVerboten">achtung! coadd verboten</a> &mdash; pan-starrs: don't coadd your data!</li>
-                </ul>
+    <!-- Bootstrap Core CSS -->
+    <!-- <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet" type="text/css"> -->
+    <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css">
 
-                    
+    <!-- Fonts -->
+    <!-- <link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href='http://fonts.googleapis.com/css?family=Roboto:400,400italic,300italic,100,100italic,300,500,700,500italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Lato:100,300,400,700,100italic,300italic,400italic,700italic' rel='stylesheet' type='text/css'>
+
+    <!-- Custom Theme CSS -->
+    <link href="css/grayscale.css" rel="stylesheet">
+
+    <!-- My custom CSS -->
+    <link href="css/custom.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body id="page-top" data-spy="scroll" data-target=".navbar-custom">
+
+    <nav class="navbar navbar-custom navbar-fixed-top darken-bg-40" role="navigation">
+        <div class="container">
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-main-collapse">
+                    <i class="fa fa-bars"></i>
+                </button>
+                <a class="navbar-brand" href="#page-top">
+                    <i class="fa fa-chevron-circle-up"></i>
+                    <!-- <span style="font-weight: 100;">|</span> -->
+                    &nbsp;&nbsp;
+                    <span class="light">adrian m. price-whelan</span>
+                </a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse navbar-right navbar-main-collapse">
+                <ul class="nav navbar-nav">
+                    <!-- Hidden li included to remove active class from about link when scrolled up past about section -->
+                    <li class="hidden">
+                        <a href="#page-top"></a>
+                    </li>
+                    <li class="page-scroll">
+                        <a href="#about">about</a>
+                    </li>
+                    <li class="page-scroll">
+                        <a href="#writing">writing</a>
+                    </li>
+                    <li class="page-scroll">
+                        <a href="#research">research</a>
+                    </li>
+                    <li class="page-scroll">
+                        <a href="#photos">photos</a>
+                    </li>
+                    <li class="page-scroll">
+                        <a href="#music">music</a>
+                    </li>
                 </ul>
-                
-                <h3>Visualizations</h3>
-                
-                <ul>
-                    <li><a href="http://viz.adrian.pw/streams">Stream maker</a></li>
-                    <li><a href="http://viz.adrian.pw/galaxy">Galaxy merger</a></li>
-                    <!--<li><a href=""></a></li>-->
-                </ul>
-                
-                <h3>Collaborators</h3>
-                
-                <ul>
-                    <li>Marcel Agüeros</li>
-                    <li>Ana Bonaca</li>
-                    <li>Mike Blanton</li>
-                    <li>Dan Foreman-Mackey</li>
-                    <li>Amanda Fournier</li>
-                    <li>David W. Hogg</li>
-                    <li class='bold'>Kathryn Johnston</li>
-                    <li>Andreas Küpper</li>
-                    <li>David Levitan</li>
-                    <li>Demitri Muna</li>
-                    <li>Eran Ofek</li>
-                    <li>Josh Peek</li>
-                    <li>Branimir Sesar</li>
-                    <li>Allyson Sheffield</li>
-                    <li>Rachel Street</li>
-                </ul>
-                
-                <!---
-                <h3>Links</h3>
-                
-                <ul>
-                    <li><a href='http://www.michaelwhelan.com' target='_blank'>The Art of Michael Whelan</a><br />
-	    			<li><a href='http://www.epernicus.com/ap' target='_blank'>Alexa Price-Whelan</a><br />
-	    			<li><a href='http://www.dietrichlab.com/' target='_blank'>Lars Dietrich</a><br />
-                </ul>
-                -->
-                
-            </section>
-            <footer>
-                <!--<p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>-->
-                <p><small>Last updated 2013-05-16.</small></p>
-            </footer>
+            </div>
+            <!-- /.navbar-collapse -->
         </div>
-        <script src="javascripts/scale.fix.js"></script>
-        
-        <script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        <!-- /.container -->
+    </nav>
 
-  ga('create', 'UA-11936482-13', 'adrian.pw');
-  ga('send', 'pageview');
+    <section class="full-page intro">
+        <div class="section-body">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-8 col-md-offset-2">
+                        <!-- <h1 class="brand-heading">&#8857;&#8853;</h1> -->
+                        <p class="intro-text">
+                            <a href="https://github.com/adrn"><i class="fa fa-github fa-3x"></i></a>
+                            <a href="https://twitter.com/adrianprw"><i class="fa fa-twitter fa-3x"></i></a>
+                            <a href="http://www.flickr.com/photos/ap-w/"><i class="fa fa-flickr fa-3x"></i></a>
+                            <a href="http://arxiv.org/find/all/1/OR+au:price_whelan+all:+EXACT+price_whelan/0/1/0/all/0/1"><i class="fa fa-flask fa-3x"></i></a>
+                            <a href="http://www.last.fm/user/adrianpw"><i class="fa fa-music fa-3x"></i></a>
+                            <a href="https://www.linkedin.com/profile/view?id=318215201"><i class="fa fa-linkedin-square fa-3x"></i></a>
+                        </p>
+                        <div class="page-scroll">
+                            <a href="#about" class="btn btn-circle">
+                                <i class="fa fa-angle-double-down"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-</script>
-        
-    </body>
+    <section id="about" class="content-section text-center">
+        <div class="about-section">
+            <div class="container">
+                <div class="col-lg-8 col-lg-offset-2 light">
+                    <p>NSF graduate research fellow at <a href="http://astro.columbia.edu">Columbia University</a></p>
+                    <p>Astrophysicist currently interested in tidal streams and Galactic dynamics</p>
+                    <p>Open source <a href="http://osrc.dfm.io/adrn">enthusiast</a>, hacker, <a href="https://github.com/adrn">developer</a></p>
+                    <p>Bassist in <a href="http://deathrayarch.bandcamp.com/releases">death ray architect</a>, avid traveler, enjoys <a href="http://www.flickr.com/photos/ap-w/">photography</a></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="writing" class="full-page">
+        <div class="section-body">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8 col-lg-offset-2">
+                        <h2 class="italic">Recent papers</h2>
+                        <hr width="25%" />
+                        <div id="recent-papers"></div>
+                        <a href="http://adsabs.harvard.edu/cgi-bin/nph-abs_connect?db_key=AST&db_key=PRE&qform=AST&arxiv_sel=astro-ph&arxiv_sel=cond-mat&arxiv_sel=cs&arxiv_sel=gr-qc&arxiv_sel=hep-ex&arxiv_sel=hep-lat&arxiv_sel=hep-ph&arxiv_sel=hep-th&arxiv_sel=math&arxiv_sel=math-ph&arxiv_sel=nlin&arxiv_sel=nucl-ex&arxiv_sel=nucl-th&arxiv_sel=physics&arxiv_sel=quant-ph&arxiv_sel=q-bio&sim_query=YES&ned_query=YES&adsobj_query=YES&aut_logic=OR&obj_logic=OR&author=%5Eprice-whelan%2C+a+m&object=&start_mon=&start_year=&end_mon=&end_year=&ttl_logic=OR&title=&txt_logic=OR&text=&nr_to_return=200&start_nr=1&jou_pick=ALL&ref_stems=&data_and=ALL&group_and=ALL&start_entry_day=&start_entry_mon=&start_entry_year=&end_entry_day=&end_entry_mon=&end_entry_year=&min_score=&sort=SCORE&data_type=SHORT&aut_syn=YES&ttl_syn=YES&txt_syn=YES&aut_wt=1.0&obj_wt=1.0&ttl_wt=0.3&txt_wt=3.0&aut_wgt=YES&obj_wgt=YES&ttl_wgt=YES&txt_wgt=YES&ttl_sco=YES&txt_sco=YES&version=1" class="btn btn-default btn-lg">ADS search</a>
+                        <a href="http://arxiv.org/find/all/1/OR+au:price_whelan+all:+EXACT+price_whelan/0/1/0/all/0/1" class="btn btn-default btn-lg">arXiv search</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="research" class="container content-section text-center">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2">
+                <h2>Contact Start Bootstrap</h2>
+                <p>Feel free to email us to provide some feedback on our templates, give us suggestions for new templates and themes, or to just say hello!</p>
+                <p>feedback@startbootstrap.com</p>
+                <ul class="list-inline banner-social-buttons">
+                    <li><a href="https://twitter.com/SBootstrap" class="btn btn-default btn-lg"><i class="fa fa-twitter fa-fw"></i> <span class="network-name">Twitter</span></a>
+                    </li>
+                    <li><a href="https://github.com/IronSummitMedia/startbootstrap" class="btn btn-default btn-lg"><i class="fa fa-github fa-fw"></i> <span class="network-name">Github</span></a>
+                    </li>
+                    <li><a href="https://plus.google.com/+Startbootstrap/posts" class="btn btn-default btn-lg"><i class="fa fa-google-plus fa-fw"></i> <span class="network-name">Google+</span></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section id="photos" class="container content-section text-center">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2">
+                <h2>Contact Start Bootstrap</h2>
+                <p>Feel free to email us to provide some feedback on our templates, give us suggestions for new templates and themes, or to just say hello!</p>
+                <p>feedback@startbootstrap.com</p>
+                <ul class="list-inline banner-social-buttons">
+                    <li><a href="https://twitter.com/SBootstrap" class="btn btn-default btn-lg"><i class="fa fa-twitter fa-fw"></i> <span class="network-name">Twitter</span></a>
+                    </li>
+                    <li><a href="https://github.com/IronSummitMedia/startbootstrap" class="btn btn-default btn-lg"><i class="fa fa-github fa-fw"></i> <span class="network-name">Github</span></a>
+                    </li>
+                    <li><a href="https://plus.google.com/+Startbootstrap/posts" class="btn btn-default btn-lg"><i class="fa fa-google-plus fa-fw"></i> <span class="network-name">Google+</span></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section id="music" class="container content-section text-center">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2">
+                <h2>Contact Start Bootstrap</h2>
+                <p>Feel free to email us to provide some feedback on our templates, give us suggestions for new templates and themes, or to just say hello!</p>
+                <p>feedback@startbootstrap.com</p>
+                <ul class="list-inline banner-social-buttons">
+                    <li><a href="https://twitter.com/SBootstrap" class="btn btn-default btn-lg"><i class="fa fa-twitter fa-fw"></i> <span class="network-name">Twitter</span></a>
+                    </li>
+                    <li><a href="https://github.com/IronSummitMedia/startbootstrap" class="btn btn-default btn-lg"><i class="fa fa-github fa-fw"></i> <span class="network-name">Github</span></a>
+                    </li>
+                    <li><a href="https://plus.google.com/+Startbootstrap/posts" class="btn btn-default btn-lg"><i class="fa fa-google-plus fa-fw"></i> <span class="network-name">Google+</span></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Core JavaScript Files -->
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script> -->
+    <script src="js/jquery-1.10.2.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/jquery.easing.min.js"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="js/grayscale.js"></script>
+
+    <script type="text/javascript">
+        $.ajax({
+            url: 'http://export.arxiv.org/api/query?search_query=au:price_whelan+cat:astro-ph&start=0&max_results=5&sortBy=submittedDate',
+            type: 'GET',
+            dataType: "xml",
+            success: function(xml) {
+                $(xml).find("entry").each(function(){
+                    var title = $(this).find("title").text().replace(/(\r\n|\n|\r)/gm,""),
+                        link = $(this).find("id").text();
+                    console.log(link);
+
+                    var p = $('<p>');
+                    p.css("opacity", 0.);
+
+                    var a = $('<a>');
+                    a.attr("href", link);
+                    a.text(title);
+                    p.append(a);
+                    $("#recent-papers").append(p);
+
+                    p.animate({ opacity: 1}, 1000);
+                });
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                console.log("ERROR");
+                console.log(textStatus);
+            }
+        });
+    </script>
+
+ </body>
+
 </html>
