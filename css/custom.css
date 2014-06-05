@@ -66,3 +66,13 @@
     font-style: italic;
     font-size: 18pt;
 }
+
+canvas {
+    width: 100%;
+    height: auto;
+}
+
+a.topic {
+    font-weight: 200;
+    font-size: 18pt;
+}
