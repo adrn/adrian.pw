@@ -131,7 +131,7 @@
     </section>
 
     <!-- Active research -->
-    <section id="research" class="full-page">
+    <section id="research" class="full-page" style="padding-top: 0px;">
         <div class="section-body">
             <div class="container" style="position: relative;">
                 <div class="row-fluid">
@@ -142,7 +142,8 @@
                 </div>
                 <div class="row">
                     <div id="research-streams" class="col-lg-6">
-                        <a href="streams.html" class="topic">Tidal streams</a></br>
+                        <a href="streams.html" class="topic">Tidal streams</a>
+                        <p class="description">Desc here</p>
                         <i class="fa fa-play fa-btn" onClick="start();"></i>&nbsp;&nbsp;
                         <i class="fa fa-stop fa-btn" onClick="stop();"></i>
                         <br/>
@@ -152,6 +153,9 @@
                     </div>
                     <div class="col-lg-6">
                         <a href="streams.html" class="topic">Milky Way chaos</a>
+                        <p class="description">Desc here</p>
+                        <i class="fa fa-play fa-btn" onClick="start();"></i>&nbsp;&nbsp;
+                        <i class="fa fa-stop fa-btn" onClick="stop();"></i>
                         <div class="canvas-container">
                             <canvas id="chaos-canvas"></canvas>
                         </div>
@@ -321,7 +325,7 @@
         function make_stream(canvas) {
             var canvas = canvas[0];
 
-            var pixScale = 1.,
+            var pixScale = 1.75,
                 alpha = 0.2;
             context = canvas.getContext('2d');
 
@@ -339,18 +343,38 @@
             // create the simulation
             simulation = new StreamSimulation(canvas, potential, pixScale);
 
-            // make a galaxy
-            var g = new GaussianGalaxy([x0+50.,y0-0.], [0.2, -1.2], 0.01, 0.01,
-                                       500, "#eeeeee", alpha);
-            simulation.galaxies = [g];
+            // make galaxies
+            var nStars = 250,
+                rScale = 0.025,
+                vScale = 0.025;
+            var g1 = new GaussianGalaxy([x0+50.,y0-0.], [0.2, -1.2], rScale, vScale,
+                                        nStars, "#eeeeee", alpha);
+            var g2 = new GaussianGalaxy([x0-50.,y0-0.], [0.5, -0.2], rScale, vScale,
+                                        nStars, "#f4a582", alpha);
+            var g3 = new GaussianGalaxy([x0-0.,y0-50.], [0.7, 0.7], rScale, vScale,
+                                        nStars, "#92c5de", alpha);
+            var g4 = new GaussianGalaxy([x0-0.,y0+50.], [0.2, -1.2], rScale, vScale,
+                                        nStars, "#a6d96a", alpha);
+            simulation.galaxies = [g1,g2,g3,g4];
 
             context.globalAlpha = alpha;
             simulation.draw(context);
-
         }
 
         function make_chaos(canvas) {
-            var context = canvas[0].getContext('2d');
+            var canvas = canvas[0];
+
+            var pixScale = 1.75,
+                alpha = 0.2;
+            context = canvas.getContext('2d');
+
+            // has to go after context definition!?!
+            canvas.width = $(".canvas-container").width();
+            canvas.height = $(".canvas-container").height();
+
+            // put the origin at the center of the canvas
+            var x0 = canvas.width / 2. / pixScale,
+                y0 = canvas.height / 2. / pixScale;
 
             // Cycle through resonant orbits in R,z?
 
@@ -359,12 +383,10 @@
         $(document).ready(function() {
             $(".full-page").height(window.innerHeight);
             $(".canvas-container").height(window.innerHeight/2);
-            //$("#stream-canvas").width($(".canvas-container").width());
-            //$("#stream-canvas").height($(".canvas-container").height());
 
             //get_paper_list();
             make_stream($("#stream-canvas"));
-            //make_chaos($("chaos-canvas"));
+            make_chaos($("#chaos-canvas"));
 
         });
 

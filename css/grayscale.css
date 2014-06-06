@@ -369,3 +369,11 @@ img::-moz-selection {
     background-size: cover;
     -o-background-size: cover;
 }
+
+.row p.description {
+    padding: 0px;
+    margin: 10px;
+    font-size: 12pt;
+    font-weight: 200;
+    color: #dddddd;
+}
