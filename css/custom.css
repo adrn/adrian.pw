@@ -78,8 +78,18 @@ a.topic {
     margin: 5 0px;
 }
 
+.canvas-container {
+    position: relative;
+}
+
 .canvas-container canvas {
     margin: 10px 0px;
     border: 1px dashed #555;
     border-radius: 10px;
+}
+
+.floating-controls {
+    position: absolute;
+    top: 15px;
+    left: 10px;
 }

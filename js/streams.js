@@ -192,19 +192,19 @@ function draw_update(dt) {
     /* Draw the current positions of the stars, then update the positions
         by the specified dt.
     */
-    wipe_context(context);
-    simulation.draw(context);
+    wipe_context(streamContext);
+    simulation.draw(streamContext);
     simulation.update(dt);
 }
 
-var interval;
-function start() {
+var streamInterval;
+function startStreams() {
     /* Start the simulation. */
-    stop();
-    interval = setInterval(draw_update, Math.pow(10, 1.));
+    stopStreams();
+    streamInterval = setInterval(draw_update, Math.pow(10, 1.));
 }
 
-function stop() {
+function stopStreams() {
     /* Stop the simulation. */
-    window.clearInterval(interval);
+    window.clearInterval(streamInterval);
 }

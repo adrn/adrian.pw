@@ -143,21 +143,24 @@
                 <div class="row">
                     <div id="research-streams" class="col-lg-6">
                         <a href="streams.html" class="topic">Tidal streams</a>
-                        <p class="description">Desc here</p>
-                        <i class="fa fa-play fa-btn" onClick="start();"></i>&nbsp;&nbsp;
-                        <i class="fa fa-stop fa-btn" onClick="stop();"></i>
-                        <br/>
+                        <p class="description">Description here...</p>
                         <div class="canvas-container">
+                            <div class="floating-controls">
+                                <i class="fa fa-play fa-btn" onClick="startStreams();"></i>&nbsp;&nbsp;
+                                <i class="fa fa-stop fa-btn" onClick="stopStreams();"></i>
+                            </div>
                             <canvas id="stream-canvas"></canvas>
                         </div>
                     </div>
                     <div class="col-lg-6">
                         <a href="streams.html" class="topic">Milky Way chaos</a>
-                        <p class="description">Desc here</p>
-                        <i class="fa fa-play fa-btn" onClick="start();"></i>&nbsp;&nbsp;
-                        <i class="fa fa-stop fa-btn" onClick="stop();"></i>
+                        <p class="description">Description here...</p>
                         <div class="canvas-container">
                             <canvas id="chaos-canvas"></canvas>
+                            <div class="floating-controls">
+                                <i class="fa fa-play fa-btn" onClick="startChaos(chaosContext, 0.1);"></i>&nbsp;&nbsp;
+                                <i class="fa fa-stop fa-btn" onClick="stopChaos();"></i>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -218,11 +221,14 @@
 
     <!-- My JS stuff -->
     <script src="js/streams.js"></script>
+    <script src="js/chaos.js"></script>
 
     <script type="text/javascript">
 
         var simulation,
-            context;
+            orbitSimulation,
+            streamContext,
+            chaosContext;
 
         function name_to_abbrev(name) {
             // Given a full name, return just initials until last name
@@ -327,7 +333,7 @@
 
             var pixScale = 1.75,
                 alpha = 0.2;
-            context = canvas.getContext('2d');
+            streamContext = canvas.getContext('2d');
 
             // has to go after context definition!?!
             canvas.width = $(".canvas-container").width();
@@ -357,16 +363,18 @@
                                         nStars, "#a6d96a", alpha);
             simulation.galaxies = [g1,g2,g3,g4];
 
-            context.globalAlpha = alpha;
-            simulation.draw(context);
+            streamContext.globalAlpha = alpha;
+            simulation.draw(streamContext);
         }
 
         function make_chaos(canvas) {
             var canvas = canvas[0];
 
-            var pixScale = 1.75,
-                alpha = 0.2;
-            context = canvas.getContext('2d');
+            var pixScale = 250,
+                alpha = 0.05,
+                dt = 0.1;
+            chaosContext = canvas.getContext('2d');
+            chaosContext.globalAlpha = alpha;
 
             // has to go after context definition!?!
             canvas.width = $(".canvas-container").width();
@@ -376,8 +384,62 @@
             var x0 = canvas.width / 2. / pixScale,
                 y0 = canvas.height / 2. / pixScale;
 
-            // Cycle through resonant orbits in R,z?
+            // define the potential
+            var potential = new HenonHeilesPotential(x0, y0);
+            orbitSimulation = new ChaosOrbit(canvas, potential, pixScale);
 
+            // Cycle through resonant orbits in R,z?
+            var regular1 = {
+                position : [x0+0., y0+0.3],
+                velocity : [0.421900462195, 0.]
+            };
+            var regular2 = {
+                position : [x0+0., y0+0.],
+                velocity : [0.433012701892, 0.25]
+            };
+
+            var chaotic1 = {
+                position : [x0+0., y0-0.2],
+                velocity : [0.452401002062, 0.]
+            };
+            var chaotic2 = {
+                position : [x0+0., y0+0.2],
+                velocity : [0.418728233265, 0.2]
+            };
+
+            orbitSimulation.orbits.push(new Orbit(regular1.position, regular1.velocity, "#eeeeee"));
+            //orbitSimulation.orbit = new Orbit(regular2.position, regular2.velocity, "#f4a582");
+            orbitSimulation.orbits.push(new Orbit(chaotic1.position, chaotic1.velocity, "#92c5de"));
+            //orbitSimulation.orbit = new Orbit(chaotic2.position, chaotic2.velocity, "#a6d96a");
+
+            // draw the zero velocity curve
+            var ngrid = 1000,
+                miny = -0.5,
+                maxy = 2.,
+                E = 1./8.;
+            var dy = (maxy - miny) / parseFloat(ngrid);
+
+            var pts = new Array();
+            y = miny;
+            for (var i=0; i<ngrid; i++) {
+                x = Math.sqrt(((2/3.)*y*y*y - y*y + 2*E) / (2*y + 1));
+
+                chaosContext.beginPath();
+                chaosContext.fillStyle = "rgba(202, 0, 32, 0.2)";
+                chaosContext.arc(x0*pixScale - x*pixScale, (y+y0)*pixScale, 1, 0,
+                                 Math.PI*2,true);
+                chaosContext.closePath();
+                chaosContext.fill();
+
+                chaosContext.beginPath();
+                chaosContext.fillStyle = "rgba(202, 0, 32, 0.2)";
+                chaosContext.arc(x0*pixScale+x*pixScale, (y+y0)*pixScale, 1, 0,
+                                 Math.PI*2,true);
+                chaosContext.closePath();
+                chaosContext.fill();
+                y += dy
+            }
+            chaosContext.restore()
         }
 
         $(document).ready(function() {
