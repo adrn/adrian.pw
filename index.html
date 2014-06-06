@@ -39,7 +39,10 @@
                     <i class="fa fa-chevron-circle-up"></i>
                     <!-- <span style="font-weight: 100;">|</span> -->
                     &nbsp;&nbsp;
-                    <span class="light">adrian m. price-whelan</span>
+                    <span class="light">
+                        adrian m. price-whelan
+                        &nbsp;&nbsp;&#8857;&#8853;
+                    </span>
                 </a>
             </div>
 
@@ -55,6 +58,9 @@
                     </li>
                     <li class="page-scroll">
                         <a href="#writing">writing</a>
+                    </li>
+                    <li class="page-scroll">
+                        <a href="#research">research</a>
                     </li>
                 </ul>
             </div>
@@ -124,6 +130,77 @@
         </div>
     </section>
 
+    <!-- Active research -->
+    <section id="research" class="full-page">
+        <div class="section-body">
+            <div class="container" style="position: relative;">
+                <div class="row-fluid">
+                    <div class="col-lg-8 col-lg-offset-2">
+                        <h2 class="italic">Current research</h2>
+                        <hr width="25%" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div id="research-streams" class="col-lg-6">
+                        <a href="streams.html" class="topic">Tidal streams</a></br>
+                        <i class="fa fa-play fa-btn" onClick="start();"></i>&nbsp;&nbsp;
+                        <i class="fa fa-stop fa-btn" onClick="stop();"></i>
+                        <br/>
+                        <div class="canvas-container">
+                            <canvas id="stream-canvas"></canvas>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <a href="streams.html" class="topic">Milky Way chaos</a>
+                        <div class="canvas-container">
+                            <canvas id="chaos-canvas"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Photos -->
+    <!-- <section id="photos" class="full-page">
+        <div class="section-body">
+            <div class="container" style="position: relative;">
+                <div class="row">
+                    <div class="col-lg-8 col-lg-offset-2">
+                        <h2 class="italic">Recent photos</h2>
+                        <hr width="25%" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div id="research-streams" class="col-lg-6">
+                        <a href="streams.html" class="topic">Flickr</a>
+                    </div>
+                    <div class="col-lg-6">
+                        <a href="streams.html" class="topic">Instagram</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="music" class="container content-section text-center">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2">
+                <h2>Contact Start Bootstrap</h2>
+                <p>Feel free to email us to provide some feedback on our templates, give us suggestions for new templates and themes, or to just say hello!</p>
+                <p>feedback@startbootstrap.com</p>
+                <ul class="list-inline banner-social-buttons">
+                    <li><a href="https://twitter.com/SBootstrap" class="btn btn-default btn-lg"><i class="fa fa-twitter fa-fw"></i> <span class="network-name">Twitter</span></a>
+                    </li>
+                    <li><a href="https://github.com/IronSummitMedia/startbootstrap" class="btn btn-default btn-lg"><i class="fa fa-github fa-fw"></i> <span class="network-name">Github</span></a>
+                    </li>
+                    <li><a href="https://plus.google.com/+Startbootstrap/posts" class="btn btn-default btn-lg"><i class="fa fa-google-plus fa-fw"></i> <span class="network-name">Google+</span></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section> -->
+
     <!-- Core JavaScript Files -->
     <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
@@ -135,7 +212,13 @@
     <!-- Custom Theme JavaScript -->
     <script src="js/grayscale.js"></script>
 
+    <!-- My JS stuff -->
+    <script src="js/streams.js"></script>
+
     <script type="text/javascript">
+
+        var simulation,
+            context;
 
         function name_to_abbrev(name) {
             // Given a full name, return just initials until last name
@@ -193,7 +276,6 @@
                                 strAuthor = strAuthor + " et al.";
 
                         }
-                        console.log(authors.length);
 
                         var authorSpan = $('<span>');
                         authorSpan.addClass("author");
@@ -237,8 +319,34 @@
         }
 
         function make_stream(canvas) {
-            var context = canvas[0].getContext('2d');
-            // simple stream simulation
+            var canvas = canvas[0];
+
+            var pixScale = 1.,
+                alpha = 0.2;
+            context = canvas.getContext('2d');
+
+            // has to go after context definition!?!
+            canvas.width = $(".canvas-container").width();
+            canvas.height = $(".canvas-container").height();
+
+            // put the origin at the center of the canvas
+            var x0 = canvas.width / 2. / pixScale,
+                y0 = canvas.height / 2. / pixScale;
+
+            // define the potential
+            var potential = new LogarithmicPotential(x0, y0, 1., 1.);
+
+            // create the simulation
+            simulation = new StreamSimulation(canvas, potential, pixScale);
+
+            // make a galaxy
+            var g = new GaussianGalaxy([x0+50.,y0-0.], [0.2, -1.2], 0.01, 0.01,
+                                       500, "#eeeeee", alpha);
+            simulation.galaxies = [g];
+
+            context.globalAlpha = alpha;
+            simulation.draw(context);
+
         }
 
         function make_chaos(canvas) {
@@ -249,9 +357,15 @@
         }
 
         $(document).ready(function() {
-            get_paper_list();
-            //make_stream($("stream-canvas"));
+            $(".full-page").height(window.innerHeight);
+            $(".canvas-container").height(window.innerHeight/2);
+            //$("#stream-canvas").width($(".canvas-container").width());
+            //$("#stream-canvas").height($(".canvas-container").height());
+
+            //get_paper_list();
+            make_stream($("#stream-canvas"));
             //make_chaos($("chaos-canvas"));
+
         });
 
     </script>

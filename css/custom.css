@@ -67,12 +67,19 @@
     font-size: 18pt;
 }
 
-canvas {
-    width: 100%;
-    height: auto;
-}
-
 a.topic {
     font-weight: 200;
     font-size: 18pt;
+}
+
+.fa-btn {
+    cursor: pointer;
+    color: #aaaaaa;
+    margin: 5 0px;
+}
+
+.canvas-container canvas {
+    margin: 10px 0px;
+    border: 1px dashed #555;
+    border-radius: 10px;
 }
