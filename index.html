@@ -95,7 +95,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-lg-8 col-lg-offset-2 light">
-                        <h2>Adrian M. Price-Whelan</h2>
+                        <h2 class="italic">Adrian M. Price-Whelan</h2>
                         <hr width="25%" />
                         <p>NSF graduate research fellow at <a href="http://astro.columbia.edu">Columbia University</a></p>
                         <p>Astrophysicist currently interested in tidal streams and Galactic dynamics</p>
@@ -137,6 +137,18 @@
 
     <script type="text/javascript">
 
+        function name_to_abbrev(name) {
+            // Given a full name, return just initials until last name
+            var names = name.split(" ");
+            var lastName = names.slice(-1)[0];
+
+            var returnName = "";
+            for (var i=0; i < (names.length-1); i++) {
+                returnName += names[i][0] + ". ";
+            }
+            return returnName + lastName
+        }
+
         // Load recent paper list
         function get_paper_list(n) {
             if (n == undefined) { n = 3; }
@@ -153,16 +165,39 @@
                         var title = $(this).find("title").text().replace(/(\r\n|\n|\r)/gm,""),
                             link = $(this).find("id").text(),
                             rawDate = $(this).find("published").text(),
-                            firstAuthor = $(this).find("author").find("name").first().text()
+                            firstAuthor = $(this).find("author").find("name").first().text();
 
                         // Author stuff
                         var lastName = firstAuthor.split(" ").slice(-1)[0];
                         if (lastName.toLowerCase() != "price-whelan") {
                             return;
                         }
+
+                        var authors = $(this).find("author").find("name"),
+                            strAuthor;
+                        if (authors.length == 1) {
+                            strAuthor = name_to_abbrev(authors.first().text());
+                        } else if (authors.length == 2) {
+                            strAuthor = name_to_abbrev(authors.first().text()) + " & " + name_to_abbrev(authors.last().text());
+                        } else {
+                            strAuthor = "";
+                            for (var i=0; i < authors.length; i++) {
+                                if (i == 0)
+                                    strAuthor = name_to_abbrev($(authors[i]).text());
+                                else
+                                    strAuthor += ", " + name_to_abbrev($(authors[i]).text());
+                                if (i >= 4) break;
+                            }
+                            // add et al. to end because there are more authors
+                            if (i != authors.length)
+                                strAuthor = strAuthor + " et al.";
+
+                        }
+                        console.log(authors.length);
+
                         var authorSpan = $('<span>');
                         authorSpan.addClass("author");
-                        authorSpan.text(lastName + " et al.")
+                        authorSpan.text(strAuthor);
 
                         // Date stuff
                         var date = rawDate.split("T")[0].split("-");
@@ -215,8 +250,8 @@
 
         $(document).ready(function() {
             get_paper_list();
-            make_stream($("stream-canvas"));
-            make_chaos($("chaos-canvas"));
+            //make_stream($("stream-canvas"));
+            //make_chaos($("chaos-canvas"));
         });
 
     </script>
