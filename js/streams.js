@@ -201,7 +201,7 @@ var streamInterval;
 function startStreams() {
     /* Start the simulation. */
     stopStreams();
-    streamInterval = setInterval(draw_update, Math.pow(10, 1.));
+    streamInterval = setInterval(draw_update, 5);
 }
 
 function stopStreams() {
