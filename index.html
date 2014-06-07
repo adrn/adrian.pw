@@ -139,9 +139,11 @@
                         <h2 class="italic">Current research</h2>
                         <a class="btn btn-default" id="select-streams" row="research-streams">Tidal Streams</a>
                         <a class="btn btn-default" id="select-chaos" row="research-chaos">Milky Way Chaos</a>
+                        <a class="btn btn-default" id="select-bbh" row="research-bbh">Final Parsec Problem</a>
                         <!-- <hr width="25%" /> -->
                     </div>
                 </div>
+                <!-- -->
                 <div class="row" id="research-streams">
                     <div class="col-md-4 col-lg-offset-1">
                         <a href="streams.html" class="topic">Tidal Streams</a>
@@ -160,6 +162,7 @@
                         </div>
                     </div>
                 </div>
+                <!-- -->
                 <div class="row" id="research-chaos">
                     <div class="col-md-4 col-lg-offset-1">
                         <a href="streams.html" class="topic">Chaos in the Milky Way Halo</a>
@@ -173,6 +176,25 @@
                             <div class="floating-controls">
                                 <i class="fa fa-play fa-btn" id="startChaos"></i>&nbsp;&nbsp;&nbsp;&nbsp;
                                 <i class="fa fa-stop fa-btn" id="stopChaos"></i>
+                            </div>
+                            <canvas id="chaos-canvas"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <!-- -->
+                <div class="row" id="research-bbh">
+                    <div class="col-md-4 col-lg-offset-1">
+                        <a href="streams.html" class="topic">Final Parsec Problem</a>
+                        <hr width="25%" />
+                        <p class="description">Black holes...</p>
+                        <p class="description"></p>
+                    </div>
+                    <div class="col-lg-6">
+
+                        <div class="canvas-container">
+                            <div class="floating-controls">
+                                <i class="fa fa-play fa-btn" id="startBBH"></i>&nbsp;&nbsp;&nbsp;&nbsp;
+                                <i class="fa fa-stop fa-btn" id="stopBBH"></i>
                             </div>
                             <canvas id="chaos-canvas"></canvas>
                         </div>
@@ -470,13 +492,14 @@
 
         function setupResearchSections() {
             // highlight initially selected research topic
-            $("#select-streams").addClass("btn-filled");
             $("#research .row .btn").each(function(j,elem) {
-                if (!$(elem).hasClass("btn-filled")) {
-                    rowID = $(elem).attr("row");
-                    $("#" + rowID).hide();
-                }
+                rowID = $(elem).attr("row");
+                $("#" + rowID).hide();
             });
+
+            $("#select-streams").addClass("btn-filled");
+            rowID = $("#select-streams").attr("row");
+            $("#" + rowID).show(400);
 
             $("#research .row .btn").click(function() {
                 if ($(this).hasClass("btn-filled"))
@@ -486,13 +509,13 @@
                     if ($(elem).hasClass("btn-filled")) {
                         $(elem).removeClass("btn-filled");
                         rowID = $(elem).attr("row");
-                        $("#" + rowID).hide();
+                        $("#" + rowID).hide(400);
                     }
                 });
 
                 $(this).addClass("btn-filled");
                 rowID = $(this).attr("row");
-                $("#" + rowID).show();
+                $("#" + rowID).show(400);
             });
         }
 
