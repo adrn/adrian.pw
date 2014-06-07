@@ -6,7 +6,7 @@ function flickrPhotos() {
         baseLinkURL = 'http://www.flickr.com/photos/{user-id}/{photo-id}/';
     var fullURL = apiURL + '&api_key=' + flickrAPIKey;
     fullURL += '&user_id=' + flickrUserId;
-    fullURL += '&per_page=5&page=1';
+    fullURL += '&per_page=100&page=1';
 
     $.ajax({
         url: fullURL,
@@ -15,8 +15,15 @@ function flickrPhotos() {
         async: true,
         success: function(xml) {
             //$("#recent-photos").empty();
-            var srcURL, linkURL;
+            var srcURL, linkURL,
+                n = 0,
+                numImages = 6;
+
             $(xml).find("photo").each(function(i){
+                if (Math.random() > 0.1) {
+                    return;
+                }
+
                 srcURL = baseSrcURL.replace("{farm-id}", $(this).attr("farm"))
                                    .replace("{server-id}", $(this).attr("server"))
                                    .replace("{photo-id}", $(this).attr("id"))
@@ -24,22 +31,54 @@ function flickrPhotos() {
                 linkURL = baseLinkURL.replace("{user-id}", flickrUserId)
                                      .replace("{photo-id}", $(this).attr("id"));
 
+                var div = $('<div>');
+                div.addClass("item");
+
                 var img = $('<img>');
                 img.attr('src', srcURL);
-                if (i == 0) {
-                    img.addClass("active");
-                }
 
                 var a = $('<a>');
                 a.attr('href', linkURL);
                 a.append(img);
+                div.append(a);
 
-                $("#photos .container").append(a);
+                $("#photos .container").append(div);
+                n += 1;
+
+                if (n >= numImages) {
+                    return false;
+                }
             });
+
+            //placePhotos();
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+            var p = $('<p>');
+            p.html("Unable to retrieve photos!");
+            p.addClass("error");
+            $("#photos .container").append(p);
         }
     });
 }
 
+function placePhotos() {
+    var $container = $('#photos .container');
+    // $container.imagesLoaded( function() {
+    //     $container.masonry({
+    //         columnWidth: function( containerWidth ) {
+    //             return containerWidth / 3;
+    //         },
+    //         itemSelector: '#photos .container img'
+    //     });
+    // });
+    $container.masonry({
+            columnWidth: function( containerWidth ) {
+                return containerWidth / 3;
+            },
+            itemSelector: '#photos .container a img'
+        });
+}
+
 function setupPhotos() {
-    //flickrPhotos();
+    flickrPhotos();
 }

@@ -197,9 +197,17 @@ a {
 /*
     Photos
 */
-#photos {
-    padding-top: 50px;
-}
 #photos .container {
-    background: #ff0000;
+    height: 100%;
+}
+
+.item {
+    width: 33.2%;
+    float: left;
+}
+
+/* images cover up the gap */
+.item img {
+    display: block;
+    width: 100.5%;
 }
