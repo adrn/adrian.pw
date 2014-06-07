@@ -1,100 +1,40 @@
-// var kms_to_kpcmyr = 0.0010227121650537077;
-
-function gaussian(mean, std) {
-  if (mean === undefined || std === undefined) {
-    throw "Gaussian random needs 2 arguments (mean, standard deviation)";
-  }
-  return randByBoxMullerTransform() * std + mean;
-}
-
-// Box Muller
-var useVal1 = true;
-function randByBoxMullerTransform() {
-  var alpha = Math.random(),
-      beta = Math.random(),
-      ret;
-
-  if (useVal1 = !useVal1) {
-    ret = Math.sqrt(-2 * Math.log(alpha)) * Math.sin(2 * Math.PI * beta);
-  } else {
-    ret = Math.sqrt(-2 * Math.log(alpha)) * Math.cos(2 * Math.PI * beta);
-  }
-  return ret;
-}
-
-function leapfrog_step(potential, x, y, vx, vy, dt) {
-    var ai = potential.acceleration_at(x, y);
-
-    var new_x = x + vx*dt + 0.5*ai[0]*dt*dt,
-        new_y = y + vy*dt + 0.5*ai[1]*dt*dt;
-
-    var new_ai = potential.acceleration_at(new_x, new_y);
-
-    var new_vx = vx + 0.5*(ai[0] + new_ai[0])*dt,
-        new_vy = vy + 0.5*(ai[1] + new_ai[1])*dt;
-
-    return [new_x, new_y, new_vx, new_vy];
-}
-
-function LogarithmicPotential(x0, y0, qz, vc) {
-    this.qz = qz;
-    this.vc = vc;
-
-    this.x0 = x0;
-    this.y0 = y0;
-
-    this.acceleration_at = function(xx, yy) {
-
-        var x = xx-this.x0,
-            y = yy-this.y0;
-
-        fac = this.vc*this.vc / (x*x + y*y/(this.qz*this.qz));
-
-        var xdotdot = fac * x,
-            ydotdot = fac * y / (this.qz*this.qz);
-
-        return [-xdotdot, -ydotdot];
-    }
-}
-
-function StreamSimulation(canvas, potential, pixel_scale) {
-    /* pixel_scale = pix/kpc */
-    this.canvas = canvas;
-    this.galaxies = new Array();
-    this.origin = [this.canvas.width / 2., this.canvas.height / 2.];
-    this.pixel_scale = pixel_scale;
+/*
+    Code for making simple visualizations of tidal streams
+*/
+function StreamSimulation(context, potential, pixelScale, dt) {
+    this.context = context;
     this.potential = potential;
-    this.cross_color = "#31a354";
+    this.pixelScale = pixelScale;
+    this.dt = dt;
+    this.interval = undefined;
 
-    this.update = function(dt) {
-        if (dt == undefined) {
-            dt = 1.
+    // clusters of stars
+    this.clusters = new Array();
+
+    this.integrator = new LeapfrogIntegrator(this.potential);
+
+    this.update = function() {
+        /*
+            Update all of the positions of the stars in each cluster.
+        */
+        var star_ws, new_star_ws;
+        for (var i=0; i < this.clusters.length; i++) {
+            star_ws = this.clusters[i].star_ws;
+            this.clusters[i].star_ws = this.integrator.step(0., star_ws, this.dt);
         }
-
-        for (var ii=0; ii < this.galaxies.length; ii++) {
-            this.galaxies[ii].update(this.potential, dt);
-        }
-
     }
 
-    this.draw = function(context) {
-        // Add a point at the origin
-        context.lineWidth = 2;
-        context.beginPath();
-        context.moveTo(this.origin[0], this.origin[1]-5.*this.pixel_scale);
-        context.lineTo(this.origin[0], this.origin[1]+5.*this.pixel_scale);
-        context.moveTo(this.origin[0]-5.*this.pixel_scale, this.origin[1]);
-        context.lineTo(this.origin[0]+5.*this.pixel_scale, this.origin[1]);
-        context.strokeStyle = this.cross_color;
-        context.stroke();
-
-        for (var ii=0; ii < this.galaxies.length; ii++) {
-            this.galaxies[ii].draw(context, this.pixel_scale);
+    this.draw = function() {
+        /*
+            Draw all of the stars in each cluster.
+        */
+        for (var ii=0; ii < this.clusters.length; ii++) {
+            this.clusters[ii].draw(this.context, this.pixelScale);
         }
     }
 
     this.clear = function() {
-        this.galaxies = new Array();
+        this.clusters = new Array();
     }
 }
 
@@ -117,7 +57,7 @@ function GaussianGalaxy(position, velocity, r_scale, v_scale, N, color, alpha) {
 
     this.position = position;
     this.velocity = velocity;
-    this.stars = new Array();
+    this.star_ws = new Array();
     this.sfr = 0;
 
     this.add_star = function() {
@@ -127,16 +67,16 @@ function GaussianGalaxy(position, velocity, r_scale, v_scale, N, color, alpha) {
         var star_vx = gaussian(this.velocity[0], v_scale),
             star_vy = gaussian(this.velocity[1], v_scale);
 
-        this.stars.push([star_x, star_y, star_vx, star_vy]);
+        this.star_ws.push([star_x, star_y, star_vx, star_vy]);
     }
 
     this.draw = function(context, pixel_scale) {
         /* Draw all stars to the given context */
 
         context.globalAlpha = this.alpha;
-        for (var ii=0; ii < this.stars.length; ii++) {
-            var x = this.stars[ii][0]*pixel_scale,
-                y = this.stars[ii][1]*pixel_scale;
+        for (var ii=0; ii < this.star_ws.length; ii++) {
+            var x = this.star_ws[ii][0]*pixel_scale,
+                y = this.star_ws[ii][1]*pixel_scale;
 
             context.beginPath();
             context.fillStyle = this.color;
@@ -148,63 +88,15 @@ function GaussianGalaxy(position, velocity, r_scale, v_scale, N, color, alpha) {
         context.restore()
     }
 
-    this.update = function(potential, dt) {
-        if (this.sfr >= 1) {
-            for (var ii=0; ii<this.sfr; ii++) {
-                this.add_star();
-            }
-        } else if (this.sfr > 0) {
-            if (Math.random() <= this.sfr) {
-                this.add_star();
-            }
-        }
-
-        for (var kk=0; kk < this.stars.length; kk++) {
-            var star = this.stars[kk];
-
-            var x = star[0],
-                y = star[1],
-                vx = star[2],
-                vy = star[3];
-
-            this.stars[kk] = leapfrog_step(potential, x, y, vx, vy, dt);
-        }
-
-        var new_pos_vel = leapfrog_step(potential, this.position[0], this.position[1],
-                                        this.velocity[0], this.velocity[1], dt);
-
-        this.position = [new_pos_vel[0], new_pos_vel[1]];
-        this.velocity = [new_pos_vel[2], new_pos_vel[3]];
-
-    }
-
     for (var ii=0; ii < N; ii++) {
         this.add_star();
     }
 }
 
-function wipe_context(context) {
-    /* Clear a canvas context. */
-    context.clearRect(0, 0, context.canvas.width, context.canvas.height);
-}
-
-function draw_update(dt) {
-    /* Draw the current positions of the stars, then update the positions
-        by the specified dt.
-    */
-    wipe_context(streamContext);
-    simulation.draw(streamContext);
-    simulation.update(dt);
-}
-
-var streamInterval;
-function startStreams() {
-    /* Start the simulation. */
-    stopStreams();
-    streamInterval = setInterval(draw_update, 5);
-}
-
-function stopStreams() {
-    /* Stop the simulation. */
-    window.clearInterval(streamInterval);
+// Can't go inside simulation object
+function streamDrawUpdate() {
+    canvas = streamSimulation.context.canvas;
+    streamSimulation.context.clearRect(0, 0, canvas.width, canvas.height);
+    streamSimulation.draw();
+    streamSimulation.update();
 }

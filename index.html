@@ -146,8 +146,8 @@
                         <p class="description">Stellar streams form when clusters of stars (globular clusters or galaxies) interact with larger galaxies. TODO: etc.</p>
                         <div class="canvas-container">
                             <div class="floating-controls">
-                                <i class="fa fa-play fa-btn" onClick="startStreams();"></i>&nbsp;&nbsp;
-                                <i class="fa fa-stop fa-btn" onClick="stopStreams();"></i>
+                                <i class="fa fa-play fa-btn" id="startStream"></i>&nbsp;&nbsp;
+                                <i class="fa fa-stop fa-btn" id="stopStream"></i>
                             </div>
                             <canvas id="stream-canvas"></canvas>
                         </div>
@@ -222,13 +222,9 @@
     <!-- My JS stuff -->
     <script src="js/streams.js"></script>
     <script src="js/chaos.js"></script>
+    <script src="js/utils.js"></script>
 
     <script type="text/javascript">
-
-        var simulation,
-            orbitSimulation,
-            streamContext,
-            chaosContext;
 
         function name_to_abbrev(name) {
             // Given a full name, return just initials until last name
@@ -328,12 +324,22 @@
             });
         }
 
+        var streamSimulation,
+            orbitSimulation;
         function make_stream(canvas) {
-            var canvas = canvas[0];
+            // Display parameters
+            var pixScale = 2.5,
+                alpha = 0.2,
+                dt = 1.,
+                context = canvas.getContext('2d'),
+                interval;
 
-            var pixScale = 1.75,
-                alpha = 0.2;
-            streamContext = canvas.getContext('2d');
+            // Galaxy parameters
+            var nGalaxies = 4,
+                nStarsPerGalaxy = 250,
+                rScale = 0.025,
+                vScale = 0.025,
+                g, x, y, vx, vy;
 
             // has to go after context definition!?!
             canvas.width = $(".canvas-container").width();
@@ -344,27 +350,34 @@
                 y0 = canvas.height / 2. / pixScale;
 
             // define the potential
-            var potential = new LogarithmicPotential(x0, y0, 1., 1.);
+            var potential = new AxisymLogPotential([x0, y0], vc=1., q=0.8, rc=0.);
 
             // create the simulation
-            simulation = new StreamSimulation(canvas, potential, pixScale);
+            streamSimulation = new StreamSimulation(context, potential, pixScale, dt);
 
             // make galaxies
-            var nStars = 250,
-                rScale = 0.025,
-                vScale = 0.025;
-            var g1 = new GaussianGalaxy([x0+50.,y0-0.], [0.2, -1.2], rScale, vScale,
-                                        nStars, "#eeeeee", alpha);
-            var g2 = new GaussianGalaxy([x0-50.,y0-0.], [0.5, -0.2], rScale, vScale,
-                                        nStars, "#f4a582", alpha);
-            var g3 = new GaussianGalaxy([x0-0.,y0-50.], [0.7, 0.7], rScale, vScale,
-                                        nStars, "#92c5de", alpha);
-            var g4 = new GaussianGalaxy([x0-0.,y0+50.], [0.2, -1.2], rScale, vScale,
-                                        nStars, "#a6d96a", alpha);
-            simulation.galaxies = [g1,g2,g3,g4];
+            var colors = ["#eeeeee", "#f4a582", "#92c5de", "#a6d96a"];
+            for (var i=0; i < nGalaxies; i++) {
+                x = 2*Math.random() - 1.;
+                y = 2*Math.random() - 1.;
+                vx = (2*Math.random() - 1.)/2.;
+                vy = (2*Math.random() - 1.)/2.;
 
-            streamContext.globalAlpha = alpha;
-            simulation.draw(streamContext);
+                g = new GaussianGalaxy([x0+50*x,y0+50*y], [vx, vy], rScale, vScale,
+                                        nStarsPerGalaxy, colors[parseInt(i%colors.length)],
+                                        alpha);
+                streamSimulation.clusters.push(g);
+            }
+
+            context.globalAlpha = alpha;
+            streamSimulation.draw();
+
+            $("#startStream").click(function() {
+                interval = setInterval(streamDrawUpdate, 5);
+            });
+            $("#stopStream").click(function() {
+                clearInterval(interval);
+            });
         }
 
         function make_chaos(canvas) {
@@ -447,7 +460,7 @@
             $(".canvas-container").height(window.innerHeight/2);
 
             //get_paper_list();
-            make_stream($("#stream-canvas"));
+            make_stream($("#stream-canvas")[0]);
             make_chaos($("#chaos-canvas"));
 
         });
