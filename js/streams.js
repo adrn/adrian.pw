@@ -100,3 +100,59 @@ function streamDrawUpdate() {
     streamSimulation.draw();
     streamSimulation.update();
 }
+
+var streamSimulation;
+function make_stream(canvas) {
+    // Display parameters
+    var pixScale = 2.5,
+        alpha = 0.2,
+        dt = 1.,
+        context = canvas.getContext('2d'),
+        interval;
+
+    // Galaxy parameters
+    var nGalaxies = 4,
+        nStarsPerGalaxy = 250,
+        rScale = 0.025,
+        vScale = 0.025,
+        g, x, y, vx, vy;
+
+    // has to go after context definition!?!
+    canvas.width = $(".canvas-container").width();
+    canvas.height = $(".canvas-container").height();
+
+    // put the origin at the center of the canvas
+    var x0 = canvas.width / 2. / pixScale,
+        y0 = canvas.height / 2. / pixScale;
+
+    // define the potential
+    var potential = new AxisymLogPotential([x0, y0], vc=1., q=0.8, rc=0.);
+
+    // create the simulation
+    streamSimulation = new StreamSimulation(context, potential, pixScale, dt);
+
+    // make galaxies
+    var colors = ["#eeeeee", "#f4a582", "#92c5de", "#a6d96a"];
+    // TODO: choose orbits based on energy and Lz?
+    for (var i=0; i < nGalaxies; i++) {
+        x = 2*Math.random() - 1.;
+        y = 2*Math.random() - 1.;
+        vx = (2*Math.random() - 1.)/2.;
+        vy = (2*Math.random() - 1.)/2.;
+
+        g = new GaussianGalaxy([x0+50*x,y0+50*y], [vx, vy], rScale, vScale,
+                                nStarsPerGalaxy, colors[parseInt(i%colors.length)],
+                                alpha);
+        streamSimulation.clusters.push(g);
+    }
+
+    context.globalAlpha = alpha;
+    streamSimulation.draw();
+
+    $("#startStream").click(function() {
+        interval = setInterval(streamDrawUpdate, 5);
+    });
+    $("#stopStream").click(function() {
+        clearInterval(interval);
+    });
+}
