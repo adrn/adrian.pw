@@ -1,0 +1,170 @@
+<html>
+    <head>
+        <title>tests</title>
+
+        <!-- Javascript dependencies -->
+        <script src="js/utils.js"></script>
+        <script src="js/jquery-1.10.2.js"></script>
+
+        <script type="text/javascript">
+            function drawPoints(ws, canvas, context, pixScale) {
+                var x, y;
+                var x0 = canvas.width / 2.,
+                    y0 = canvas.height / 2.;
+                for (var i=0; i<ws.length; i++) {
+                    x = ws[i][0][0];
+                    y = ws[i][0][1];
+                    context.beginPath();
+                    context.fillStyle = "#000000";
+                    context.arc(pixScale*x+x0, pixScale*y+y0, 1, 0, Math.PI*2,true);
+                    context.closePath();
+                    context.fill();
+                }
+                context.restore()
+            }
+        </script>
+
+    </head>
+
+    <body>
+        <section>
+            <script type="text/javascript">
+                $(document).ready(function() {
+                    var r0 = [0.,0.],
+                        k = 1.,
+                        potential = new KeplerPotential(r0, k),
+                        r;
+
+                    var minx = -5,
+                        maxx = 5.,
+                        miny = -5,
+                        maxy = 5.;
+
+                    var acc_grid = new Array(),
+                        pot_grid = new Array();
+                    for (var x=minx; x<=maxx; x++) {
+                        for (var y=miny; y<=maxy; y++) {
+                            r = [x,y];
+                            pot_grid.push(potential.value_at(r));
+                            acc = potential.acceleration_at(r);
+                            acc_grid.push(Math.sqrt(acc[0]*acc[0] + acc[1]*acc[1]));
+                        }
+                    }
+                    //console.log(pot_grid);
+
+                });
+            </script>
+        </section>
+
+        <!-- Test the Kepler potential -->
+        <section>
+            <script type="text/javascript">
+                $(document).ready(function() {
+                    var r0 = [0.,0.],
+                        k = 1.,
+                        potential = new KeplerPotential(r0, k),
+                        integrator = new LeapfrogIntegrator(potential),
+                        dt = 0.2,
+                        pixScale = 40;
+
+                    var w0 = [[2.5, 0., 0., -0.75]];
+                    var w = integrator.step(0., w0, dt);
+                    // console.log(w);
+
+                    ret = integrator.run(w0, dt, 1000);
+                    console.log(ret.ws);
+
+                    // draw to canvas
+                    var canvas = $("#orbitTest")[0],
+                        context = canvas.getContext('2d');
+
+                    // point at center
+                    var x0 = canvas.width / 2.,
+                        y0 = canvas.height / 2.;
+                    context.beginPath();
+                    context.fillStyle = "#ff0000";
+                    context.fillRect(x0,y0,4,4);
+                    context.closePath();
+                    context.fill();
+
+
+                    drawPoints(ret.ws, canvas, context, pixScale);
+
+                });
+            </script>
+            <canvas id="orbitTest" width=600 height=400 style="background: #dddddd;"></canvas>
+        </section>
+
+        <!-- Test the Logarithmic potential -->
+        <section>
+            <script type="text/javascript">
+                $(document).ready(function() {
+                    var r0 = [0.,0.],
+                        q = 0.9,
+                        potential = new AxisymLogPotential(r0, 1., q, 0.),
+                        integrator = new LeapfrogIntegrator(potential),
+                        dt = 0.05,
+                        pixScale = 40;
+
+                    var w0 = [[2., 0., 0.75, 0.75]];
+                    var w = integrator.step(0., w0, 0.1);
+                    // console.log(w);
+
+                    ret = integrator.run(w0, dt, 10000);
+                    console.log(ret.ws);
+
+                    // draw to canvas
+                    var canvas = $("#logOrbit")[0],
+                        context = canvas.getContext('2d');
+
+                    // point at center
+                    var x0 = canvas.width / 2.,
+                        y0 = canvas.height / 2.;
+                    context.beginPath();
+                    context.fillStyle = "#ff0000";
+                    context.fillRect(x0,y0,4,4);
+                    context.closePath();
+                    context.fill();
+
+
+                    drawPoints(ret.ws, canvas, context, pixScale);
+
+                });
+            </script>
+            <canvas id="logOrbit" width=600 height=400 style="background: #dddddd;"></canvas>
+        </section>
+
+        <!-- Test the Henon-Heiles potential -->
+        <section>
+            <script type="text/javascript">
+                $(document).ready(function() {
+                    var r0 = [0.,0.],
+                        potential = new HenonHeilesPotential(r0),
+                        integrator = new LeapfrogIntegrator(potential),
+                        dt = 0.05,
+                        pixScale = 225;
+
+                    var w0 = [[0.45, 0., -0.2, 0.]];
+                    ret = integrator.run(w0, dt, 10000);
+
+                    // draw to canvas
+                    var canvas = $("#hhOrbit")[0],
+                        context = canvas.getContext('2d');
+
+                    // point at center
+                    var x0 = canvas.width / 2.,
+                        y0 = canvas.height / 2.;
+                    context.beginPath();
+                    context.fillStyle = "#ff0000";
+                    context.fillRect(x0,y0,4,4);
+                    context.closePath();
+                    context.fill();
+
+                    drawPoints(ret.ws, canvas, context, pixScale);
+
+                });
+            </script>
+            <canvas id="hhOrbit" width=600 height=400 style="background: #dddddd;"></canvas>
+        </section>
+    </body>
+</html>
