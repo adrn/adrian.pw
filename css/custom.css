@@ -32,6 +32,51 @@
 .v-spacer-32 { margin-top: 16px; margin-bottom: 16px;}
 .v-spacer-64 { margin-top: 32px; margin-bottom: 32px;}
 
+/*
+    Page divs
+*/
+.full-page {
+    width: 100%;
+    height: auto;
+    color: #eeeeee;
+    background-color: #121212;
+    display: table;
+    vertical-align: middle;
+    text-align: center;
+    position: relative;
+}
+
+.full-page .section-body, .full-page .container {
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+    vertical-align: middle;
+}
+
+.full-page .section-body {
+    height: 100%;
+    position: relative;
+}
+
+.full-page .container {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 50%;
+    margin: auto;
+}
+
+.full-page .row {
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+/*
+    Section-level stuff
+*/
 .intro-text a {
     color: #ffffff;
     padding-left: 20px;
@@ -45,6 +90,19 @@
 .intro-text a:focus,
 .intro-text a:hover {
     opacity: 0.85;
+}
+
+.section-about {
+    background: url(../img/hole.png) no-repeat center center scroll;
+    background-color: #000;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+    -o-background-size: cover;
+}
+
+.section-research .container {
+    height: 80%;
 }
 
 #recent-papers {
@@ -68,6 +126,11 @@
     color: #dddddd;
 }
 
+a.topic {
+    font-weight: 400;
+    font-size: 16pt;
+}
+
 .italic { font-style: italic; }
 .underline { text-decoration: underline; }
 
@@ -75,11 +138,6 @@
     text-align: center;
     color: #ca0020;
     font-style: italic;
-    font-size: 18pt;
-}
-
-a.topic {
-    font-weight: 200;
     font-size: 18pt;
 }
 
@@ -91,6 +149,7 @@ a.topic {
 
 .canvas-container {
     position: relative;
+    width: 100%;
 }
 
 .canvas-container canvas {
@@ -111,21 +170,6 @@ hr {
 
 a {
     cursor: pointer;
-}
-
-/*
-    About section
-*/
-.about-section {
-    padding: 100px 0;
-    color: #fff;
-    /*background: url(../img/climbing.png) no-repeat center center scroll;*/
-    background: url(../img/hole.png) no-repeat center center scroll;
-    background-color: #000;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    background-size: cover;
-    -o-background-size: cover;
 }
 
 /*
@@ -156,12 +200,6 @@ a {
 #photos {
     padding-top: 50px;
 }
-/*.full-page .section-body, .full-page .container {
-    margin: 0px;
-    padding: 0px;
-    width: 100%;
-    height: 100%;
-}*/
 #photos .container {
     background: #ff0000;
 }
