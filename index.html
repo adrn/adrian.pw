@@ -62,6 +62,9 @@
                     <li class="page-scroll">
                         <a href="#research">research</a>
                     </li>
+                    <li class="page-scroll">
+                        <a href="#photos">photos</a>
+                    </li>
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
@@ -70,7 +73,7 @@
     </nav>
 
     <!-- Intro -->
-    <section class="full-page intro">
+    <section id="intro" class="full-page intro">
         <div class="section-body">
             <div class="container">
                 <div class="row">
@@ -139,7 +142,7 @@
                         <h2 class="italic">Current research</h2>
                         <a class="btn btn-default" id="select-streams" row="research-streams">Tidal Streams</a>
                         <a class="btn btn-default" id="select-chaos" row="research-chaos">Milky Way Chaos</a>
-                        <a class="btn btn-default" id="select-bbh" row="research-bbh">Final Parsec Problem</a>
+                        <!-- <a class="btn btn-default" id="select-bbh" row="research-bbh">Final Parsec Problem</a> -->
                         <!-- <hr width="25%" /> -->
                     </div>
                 </div>
@@ -167,22 +170,24 @@
                     <div class="col-md-4 col-lg-offset-1">
                         <a href="streams.html" class="topic">Chaos in the Milky Way Halo</a>
                         <hr width="25%" />
-                        <p class="description">Dynamical chaos occurs when a system displays extreme sensitivity to initial conditions and can lead to orbits that ...</p>
-                        <p class="description"></p>
+                        <p class="description">Dynamical chaos occurs when a system displays extreme sensitivity to initial conditions --- two orbits that start very close can end up arbitrarily far apart, and the rate at which they diverge is exponential if they are chaotic. Such orbits --- which are solved for by deterministic equations of motion --- can have unpredictable outcomes.</p>
+                        <p class="description">Chaotic orbits are known to be important in the very centers of galaxies, near galactic bars, and in triaxial elliptical systems, but we are interested in the effect of chaos on the formation of tidal streams. This could have significant implications for dynamical inference and inference about the accretion history of galaxies based on observations of substructure.</p>
                     </div>
                     <div class="col-lg-6">
 
                         <div class="canvas-container">
                             <div class="floating-controls">
-                                <i class="fa fa-play fa-btn" id="startChaos"></i>&nbsp;&nbsp;&nbsp;&nbsp;
-                                <i class="fa fa-stop fa-btn" id="stopChaos"></i>
+                                <i class="fa fa-play fa-btn" id="startChaos"></i><span class="h-spacer-8"></span>
+                                <i class="fa fa-stop fa-btn" id="stopChaos"></i><span class="h-spacer-16"></span>
+                                <a style="font-weight:200;" id="regular">regular orbit</a><span class="h-spacer-8"></span>
+                                <a style="font-weight:200;" id="chaotic">chaotic orbit</a>
                             </div>
                             <canvas id="chaos-canvas"></canvas>
                         </div>
                     </div>
                 </div>
                 <!-- -->
-                <div class="row" id="research-bbh">
+                <!-- <div class="row" id="research-bbh">
                     <div class="col-md-4 col-lg-offset-1">
                         <a href="streams.html" class="topic">Final Parsec Problem</a>
                         <hr width="25%" />
@@ -199,34 +204,26 @@
                             <canvas id="chaos-canvas"></canvas>
                         </div>
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
     </section>
 
     <!-- Photos -->
-    <!-- <section id="photos" class="full-page">
+    <section id="photos" class="full-page">
         <div class="section-body">
-            <div class="container" style="position: relative;">
-                <div class="row">
+            <div class="container">
+                dflknasdf
+                <!-- <div class="row">
                     <div class="col-lg-8 col-lg-offset-2">
                         <h2 class="italic">Recent photos</h2>
-                        <hr width="25%" />
                     </div>
-                </div>
-                <div class="row">
-                    <div id="research-streams" class="col-lg-6">
-                        <a href="streams.html" class="topic">Flickr</a>
-                    </div>
-                    <div class="col-lg-6">
-                        <a href="streams.html" class="topic">Instagram</a>
-                    </div>
-                </div>
+                </div> -->
             </div>
         </div>
     </section>
 
-    <section id="music" class="container content-section text-center">
+    <!--<section id="music" class="container content-section text-center">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2">
                 <h2>Contact Start Bootstrap</h2>
@@ -259,6 +256,7 @@
     <script src="js/streams.js"></script>
     <script src="js/chaos.js"></script>
     <script src="js/utils.js"></script>
+    <script src="js/photos.js"></script>
 
     <script type="text/javascript">
 
@@ -360,79 +358,6 @@
             });
         }
 
-        function make_chaos(canvas) {
-            var pixScale = 250,
-                alpha = 0.05,
-                dt = 0.1;
-            chaosContext = canvas.getContext('2d');
-            chaosContext.globalAlpha = alpha;
-
-            // has to go after context definition!?!
-            canvas.width = $(".canvas-container").width();
-            canvas.height = $(".canvas-container").height();
-
-            // put the origin at the center of the canvas
-            var x0 = canvas.width / 2. / pixScale,
-                y0 = canvas.height / 2. / pixScale;
-
-            // define the potential
-            var potential = new HenonHeilesPotential(x0, y0);
-            orbitSimulation = new ChaosOrbit(canvas, potential, pixScale);
-
-            // Cycle through resonant orbits in R,z?
-            var regular1 = {
-                position : [x0+0., y0+0.3],
-                velocity : [0.421900462195, 0.]
-            };
-            var regular2 = {
-                position : [x0+0., y0+0.],
-                velocity : [0.433012701892, 0.25]
-            };
-
-            var chaotic1 = {
-                position : [x0+0., y0-0.2],
-                velocity : [0.452401002062, 0.]
-            };
-            var chaotic2 = {
-                position : [x0+0., y0+0.2],
-                velocity : [0.418728233265, 0.2]
-            };
-
-            orbitSimulation.orbits.push(new Orbit(regular1.position, regular1.velocity, "#eeeeee"));
-            //orbitSimulation.orbit = new Orbit(regular2.position, regular2.velocity, "#f4a582");
-            orbitSimulation.orbits.push(new Orbit(chaotic1.position, chaotic1.velocity, "#92c5de"));
-            //orbitSimulation.orbit = new Orbit(chaotic2.position, chaotic2.velocity, "#a6d96a");
-
-            // draw the zero velocity curve
-            var ngrid = 1000,
-                miny = -0.5,
-                maxy = 2.,
-                E = 1./8.;
-            var dy = (maxy - miny) / parseFloat(ngrid);
-
-            var pts = new Array();
-            y = miny;
-            for (var i=0; i<ngrid; i++) {
-                x = Math.sqrt(((2/3.)*y*y*y - y*y + 2*E) / (2*y + 1));
-
-                chaosContext.beginPath();
-                chaosContext.fillStyle = "rgba(202, 0, 32, 0.2)";
-                chaosContext.arc(x0*pixScale - x*pixScale, (y+y0)*pixScale, 1, 0,
-                                 Math.PI*2,true);
-                chaosContext.closePath();
-                chaosContext.fill();
-
-                chaosContext.beginPath();
-                chaosContext.fillStyle = "rgba(202, 0, 32, 0.2)";
-                chaosContext.arc(x0*pixScale+x*pixScale, (y+y0)*pixScale, 1, 0,
-                                 Math.PI*2,true);
-                chaosContext.closePath();
-                chaosContext.fill();
-                y += dy
-            }
-            chaosContext.restore()
-        }
-
         function setupResearchSections() {
             // highlight initially selected research topic
             $("#research .row .btn").each(function(j,elem) {
@@ -440,14 +365,21 @@
                 $("#" + rowID).hide();
             });
 
+            // Default selection
             $("#select-streams").addClass("btn-filled");
             rowID = $("#select-streams").attr("row");
             $("#" + rowID).show(400);
+            // $("#select-chaos").addClass("btn-filled");
+            // rowID = $("#select-chaos").attr("row");
+            // $("#" + rowID).show(400);
+
 
             $("#research .row .btn").click(function() {
                 if ($(this).hasClass("btn-filled"))
                     return;
 
+                // trigger all stops
+                $(".fa-stop").trigger("click");
                 $("#research .row .btn").each(function(j,elem) {
                     if ($(elem).hasClass("btn-filled")) {
                         $(elem).removeClass("btn-filled");
@@ -471,6 +403,7 @@
             make_chaos($("#chaos-canvas")[0]);
 
             setupResearchSections();
+            setupPhotos();
 
         });
 

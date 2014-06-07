@@ -1,12 +1,12 @@
 /*
     Code for making simple visualizations of tidal streams
 */
+var streamSimulation;
 function StreamSimulation(context, potential, pixelScale, dt) {
     this.context = context;
     this.potential = potential;
     this.pixelScale = pixelScale;
     this.dt = dt;
-    this.interval = undefined;
 
     // clusters of stars
     this.clusters = new Array();
@@ -81,7 +81,7 @@ function GaussianGalaxy(position, velocity, r_scale, v_scale, N, color, alpha) {
             context.beginPath();
             context.fillStyle = this.color;
             //context.fillRect(x,y,pixel_scale,pixel_scale);
-            context.arc(x, y, 1, 0, Math.PI*2,true);
+            context.arc(x, y, 2, 0, Math.PI*2,true);
             context.closePath();
             context.fill();
         }
@@ -101,7 +101,6 @@ function streamDrawUpdate() {
     streamSimulation.update();
 }
 
-var streamSimulation;
 function make_stream(canvas) {
     // Display parameters
     var pixScale = 2.5,
@@ -125,10 +124,8 @@ function make_stream(canvas) {
     var x0 = canvas.width / 2. / pixScale,
         y0 = canvas.height / 2. / pixScale;
 
-    // define the potential
+    // define the potential and simulation
     var potential = new AxisymLogPotential([x0, y0], vc=1., q=0.8, rc=0.);
-
-    // create the simulation
     streamSimulation = new StreamSimulation(context, potential, pixScale, dt);
 
     // make galaxies

@@ -188,3 +188,12 @@ function HenonHeilesPotential(r0) {
         return [-2*x*y - x, -x*x + y*y - y];
     }
 }
+
+/* ---------------------------------------------------
+    Drawing
+*/
+function PointStyle(color, alpha, size) {
+    this.color = color;
+    this.alpha = alpha;
+    this.size = size;
+}
