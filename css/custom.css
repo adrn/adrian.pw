@@ -56,10 +56,6 @@
     font-style: italic;
 }
 
-#research row {
-    vertical-align: top !important;
-}
-
 .error {
     text-align: center;
     color: #ca0020;
@@ -92,4 +88,41 @@ a.topic {
     position: absolute;
     top: 15px;
     left: 10px;
+}
+
+hr {
+    border: 1px solid #ccc;
+}
+
+/*
+    About section
+*/
+.about-section {
+    padding: 100px 0;
+    color: #fff;
+    /*background: url(../img/climbing.png) no-repeat center center scroll;*/
+    background: url(../img/hole.png) no-repeat center center scroll;
+    background-color: #000;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+    -o-background-size: cover;
+}
+
+/*
+    Research
+*/
+.row p.description {
+    text-align: justify;
+    text-justify:inter-word;
+    padding: 0px;
+    margin: 15px 0px;
+    font-size: 12pt;
+    font-weight: 200;
+    color: #dddddd;
+}
+
+#research .btn {
+    margin-left: 10px;
+    margin-right: 10px;
 }

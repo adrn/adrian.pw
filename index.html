@@ -134,33 +134,47 @@
     <section id="research" class="full-page" style="padding-top: 0px;">
         <div class="section-body">
             <div class="container" style="position: relative;">
-                <div class="row-fluid">
+                <div class="row" style="margin-bottom: 20px;">
                     <div class="col-lg-8 col-lg-offset-2">
                         <h2 class="italic">Current research</h2>
-                        <hr width="25%" />
+                        <a class="btn btn-default" id="select-streams" row="research-streams">Tidal Streams</a>
+                        <a class="btn btn-default" id="select-chaos" row="research-chaos">Milky Way Chaos</a>
+                        <!-- <hr width="25%" /> -->
                     </div>
                 </div>
-                <div class="row">
-                    <div id="research-streams" class="col-lg-6">
-                        <a href="streams.html" class="topic">Tidal streams</a>
-                        <p class="description">Stellar streams form when clusters of stars (globular clusters or galaxies) interact with larger galaxies. TODO: etc.</p>
+                <div class="row" id="research-streams">
+                    <div class="col-md-4 col-lg-offset-1">
+                        <a href="streams.html" class="topic">Tidal Streams</a>
+                        <hr width="25%" />
+                        <p class="description">Stellar streams form when galaxies or globular clusters are tidally disrupted by the gravitational field of a larger galaxy. Tidal streams are observed in the halo of the Milky Way --- for example the Sagittarius, Orphan, or Palomar 5 streams --- and are also found around external galaxies. Tidal streams in the halo of the Milky Way are powerful tracers of the underlying shape and distribution of mass in the Galactic dark matter halo.</p>
+                        <p class="description">Understanding how tidal streams form and evolve will allow us to measure detailed properties of the Milky Way's gravitational field at large distances and therefore place constraints on the behavior of dark matter on galactic scales.</p>
+                    </div>
+                    <div class="col-lg-6">
+
                         <div class="canvas-container">
                             <div class="floating-controls">
-                                <i class="fa fa-play fa-btn" id="startStream"></i>&nbsp;&nbsp;
+                                <i class="fa fa-play fa-btn" id="startStream"></i>&nbsp;&nbsp;&nbsp;&nbsp;
                                 <i class="fa fa-stop fa-btn" id="stopStream"></i>
                             </div>
                             <canvas id="stream-canvas"></canvas>
                         </div>
                     </div>
-                    <div class="col-lg-6">
-                        <a href="streams.html" class="topic">Milky Way chaos</a>
+                </div>
+                <div class="row" id="research-chaos">
+                    <div class="col-md-4 col-lg-offset-1">
+                        <a href="streams.html" class="topic">Chaos in the Milky Way Halo</a>
+                        <hr width="25%" />
                         <p class="description">Dynamical chaos occurs when a system displays extreme sensitivity to initial conditions and can lead to orbits that ...</p>
+                        <p class="description"></p>
+                    </div>
+                    <div class="col-lg-6">
+
                         <div class="canvas-container">
-                            <canvas id="chaos-canvas"></canvas>
                             <div class="floating-controls">
-                                <i class="fa fa-play fa-btn" onClick="startChaos(chaosContext, 0.1);"></i>&nbsp;&nbsp;
-                                <i class="fa fa-stop fa-btn" onClick="stopChaos();"></i>
+                                <i class="fa fa-play fa-btn" id="startChaos"></i>&nbsp;&nbsp;&nbsp;&nbsp;
+                                <i class="fa fa-stop fa-btn" id="stopChaos"></i>
                             </div>
+                            <canvas id="chaos-canvas"></canvas>
                         </div>
                     </div>
                 </div>
@@ -357,6 +371,7 @@
 
             // make galaxies
             var colors = ["#eeeeee", "#f4a582", "#92c5de", "#a6d96a"];
+            // TODO: choose orbits based on energy and Lz?
             for (var i=0; i < nGalaxies; i++) {
                 x = 2*Math.random() - 1.;
                 y = 2*Math.random() - 1.;
@@ -381,8 +396,6 @@
         }
 
         function make_chaos(canvas) {
-            var canvas = canvas[0];
-
             var pixScale = 250,
                 alpha = 0.05,
                 dt = 0.1;
@@ -455,13 +468,43 @@
             chaosContext.restore()
         }
 
+        function setupResearchSections() {
+            // highlight initially selected research topic
+            $("#select-streams").addClass("btn-filled");
+            $("#research .row .btn").each(function(j,elem) {
+                if (!$(elem).hasClass("btn-filled")) {
+                    rowID = $(elem).attr("row");
+                    $("#" + rowID).hide();
+                }
+            });
+
+            $("#research .row .btn").click(function() {
+                if ($(this).hasClass("btn-filled"))
+                    return;
+
+                $("#research .row .btn").each(function(j,elem) {
+                    if ($(elem).hasClass("btn-filled")) {
+                        $(elem).removeClass("btn-filled");
+                        rowID = $(elem).attr("row");
+                        $("#" + rowID).hide();
+                    }
+                });
+
+                $(this).addClass("btn-filled");
+                rowID = $(this).attr("row");
+                $("#" + rowID).show();
+            });
+        }
+
         $(document).ready(function() {
             $(".full-page").height(window.innerHeight);
-            $(".canvas-container").height(window.innerHeight/2);
+            $(".canvas-container").height(window.innerHeight/1.5*0.9);
 
             //get_paper_list();
             make_stream($("#stream-canvas")[0]);
-            make_chaos($("#chaos-canvas"));
+            make_chaos($("#chaos-canvas")[0]);
+
+            setupResearchSections();
 
         });
 
