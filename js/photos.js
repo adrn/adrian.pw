@@ -2,7 +2,7 @@ var flickrUserId = '93815710@N02',
     flickrAPIKey = 'e66afe988bcf52593fc4e070b084cdaf';
 function flickrPhotos() {
     var apiURL = 'https://api.flickr.com/services/rest/?&method=flickr.people.getPublicPhotos',
-        baseSrcURL = 'http://farm{farm-id}.static.flickr.com/{server-id}/{photo-id}_{photo-secret}.jpg',
+        baseSrcURL = 'http://farm{farm-id}.static.flickr.com/{server-id}/{photo-id}_{photo-secret}_b.jpg',
         baseLinkURL = 'http://www.flickr.com/photos/{user-id}/{photo-id}/';
     var fullURL = apiURL + '&api_key=' + flickrAPIKey;
     fullURL += '&user_id=' + flickrUserId;
@@ -14,71 +14,63 @@ function flickrPhotos() {
         dataType: "xml",
         async: true,
         success: function(xml) {
-            //$("#recent-photos").empty();
-            var srcURL, linkURL,
-                n = 0,
-                numImages = 6;
+            var num = $(xml).find("photo").length,
+                photoIdx = parseInt(Math.random()*num),
+                photo = $($(xml).find("photo")[photoIdx]);
 
-            $(xml).find("photo").each(function(i){
-                if (Math.random() > 0.1) {
-                    return;
-                }
+            var srcURL = baseSrcURL.replace("{farm-id}", $(photo).attr("farm"))
+                                   .replace("{server-id}", $(photo).attr("server"))
+                                   .replace("{photo-id}", $(photo).attr("id"))
+                                   .replace("{photo-secret}", $(photo).attr("secret"));
+            var linkURL = baseLinkURL.replace("{user-id}", flickrUserId)
+                                     .replace("{photo-id}", $(photo).attr("id"));
 
-                srcURL = baseSrcURL.replace("{farm-id}", $(this).attr("farm"))
-                                   .replace("{server-id}", $(this).attr("server"))
-                                   .replace("{photo-id}", $(this).attr("id"))
-                                   .replace("{photo-secret}", $(this).attr("secret"));
-                linkURL = baseLinkURL.replace("{user-id}", flickrUserId)
-                                     .replace("{photo-id}", $(this).attr("id"));
+            $('.flickr-panel').css("background-image",
+                                   "url(" + srcURL + ")");
 
-                var div = $('<div>');
-                div.addClass("item");
-
-                var img = $('<img>');
-                img.attr('src', srcURL);
-
-                var a = $('<a>');
-                a.attr('href', linkURL);
-                a.append(img);
-                div.append(a);
-
-                $("#photos .container").append(div);
-                n += 1;
-
-                if (n >= numImages) {
-                    return false;
-                }
-            });
-
-            //placePhotos();
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
             var p = $('<p>');
-            p.html("Unable to retrieve photos!");
+            p.html("Unable to retrieve Flickr photo");
             p.addClass("error");
-            $("#photos .container").append(p);
+            $("#photos .container .flickr-panel .float-link").append(p);
         }
     });
 }
 
-function placePhotos() {
-    var $container = $('#photos .container');
-    // $container.imagesLoaded( function() {
-    //     $container.masonry({
-    //         columnWidth: function( containerWidth ) {
-    //             return containerWidth / 3;
-    //         },
-    //         itemSelector: '#photos .container img'
-    //     });
-    // });
-    $container.masonry({
-            columnWidth: function( containerWidth ) {
-                return containerWidth / 3;
-            },
-            itemSelector: '#photos .container a img'
-        });
+var iClientID = "236540640bea4323949fe1792f0261fe",
+    iUserID = "19342634";
+function instgramPhotos() {
+    var instagramURL = "https://api.instagram.com/v1/users/{user-id}/media/recent?count={num}&client_id={client-id}";
+    $.ajax({
+        type: "GET",
+        dataType: "jsonp",
+        cache: false,
+        url: instagramURL.replace("{client-id}", iClientID)
+                         .replace("{user-id}", iUserID)
+                         .replace("{num}", 100),
+        success: function(data) {
+            var cntr = $('#photos .container .instagram-panel'),
+                num = data.data.length,
+                photoIdx = parseInt(Math.random()*num);
+
+            console.log(data.data[photoIdx].images);
+            var srcURL = data.data[photoIdx].images.standard_resolution.url;
+
+            $('.instagram-panel').css("background-image",
+                                   "url(" + srcURL + ")");
+
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+            var p = $('<p>');
+            p.html("Unable to retrieve instragram photos");
+            p.addClass("error");
+            $("#photos .container .instagram-panel .float-link").append(p);
+        }
+    });
 }
 
 function setupPhotos() {
     flickrPhotos();
+    instgramPhotos();
 }

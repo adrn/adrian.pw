@@ -197,17 +197,30 @@ a {
 /*
     Photos
 */
-#photos .container {
+#photos .container, #photos .row {
     height: 100%;
 }
 
-.item {
-    width: 33.2%;
-    float: left;
+#photos .float-link {
+    display: table-cell;
+    vertical-align: middle;
 }
 
-/* images cover up the gap */
-.item img {
-    display: block;
-    width: 100.5%;
+#photos a {
+    font-size: 32pt;
+    font-weight: 200;
+    padding: 25px 50px 25px 50px;
+}
+
+#photos .flickr-panel, #photos .instagram-panel {
+    display: table;
+    position: relative;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-attachment: center;
+    background-position: center;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+    -o-background-size: cover;
 }
