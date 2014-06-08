@@ -125,36 +125,6 @@ a:focus {
     }
 }
 
-/* ----------------------------------------------------
-    Intro
-*/
-.intro {
-    background: url(../img/rocks_bw.png) no-repeat bottom center scroll;
-    background-color: #000;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
-}
-
-.intro-text {
-    font-size: 18px;
-    font-weight: 200;
-    padding: 20px;
-    border-radius: 25px;
-}
-
-@media(min-width:767px) {
-    .intro {
-        height: 100%;
-        padding: 0;
-    }
-
-    .intro-text {
-        font-size: 25px;
-    }
-}
-
 .btn-circle {
     width: 70px;
     height: 70px;
