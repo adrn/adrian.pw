@@ -207,6 +207,7 @@ a {
 }
 
 #photos a {
+    color: #dddddd;
     font-size: 32pt;
     font-weight: 200;
     padding: 25px 50px 25px 50px;
