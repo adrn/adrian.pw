@@ -36,16 +36,18 @@
     Page divs
 */
 .full-page {
+    position: relative;
     width: 100%;
     height: auto;
     color: #eeeeee;
     background-color: #121212;
-    display: table;
     vertical-align: middle;
     text-align: center;
-    position: relative;
+    background: #0000ff;
 }
 
+/*
+// OLD
 .full-page .section-body, .full-page .container {
     margin: 0px;
     padding: 0px;
@@ -60,14 +62,13 @@
 
 .full-page .container {
     position: absolute;
-    top: 0;
-    bottom: 0;
     left: 0;
     right: 0;
     width: 100%;
     height: 50%;
     margin: auto;
-}
+    background: #ff0000;
+}*/
 
 .full-page .row {
     padding-top: 20px;
@@ -97,8 +98,8 @@
     background-color: #000;
     -webkit-background-size: cover;
     -moz-background-size: cover;
-    background-size: cover;
     -o-background-size: cover;
+    background-size: cover;
 }
 
 .section-research .container {
@@ -144,7 +145,7 @@ a.topic {
 .fa-btn {
     cursor: pointer;
     color: #aaaaaa;
-    margin: 5 0px;
+    margin: 0px;
 }
 
 .canvas-container {
@@ -222,6 +223,6 @@ a {
     background-position: center;
     -webkit-background-size: cover;
     -moz-background-size: cover;
-    background-size: cover;
     -o-background-size: cover;
+    background-size: cover;
 }

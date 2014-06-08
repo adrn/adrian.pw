@@ -133,8 +133,8 @@ a:focus {
     background-color: #000;
     -webkit-background-size: cover;
     -moz-background-size: cover;
-    background-size: cover;
     -o-background-size: cover;
+    background-size: cover;
 }
 
 .intro-text {
@@ -148,10 +148,6 @@ a:focus {
     .intro {
         height: 100%;
         padding: 0;
-    }
-
-    .brand-heading {
-        font-size: 100px;
     }
 
     .intro-text {
