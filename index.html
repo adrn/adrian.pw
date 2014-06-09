@@ -318,15 +318,14 @@
             $(".full-page").height(window.innerHeight);
             $(".canvas-container").height(window.innerHeight/1.5*0.9);
 
-            var mq = window.matchMedia('@media all and (max-width: 767px)');
-            if (mq.matches) {
-                // the width of browser is more then 767px
+            if (window.matchMedia('(min-width: 767px)').matches) {
+                // browser is at least 767px wide
                 $(".canvas-container").width(window.innerWidth/2*0.95);
             } else {
                 // the width of browser is less then 767px
                 $(".canvas-container").width(window.innerWidth*0.9);
-                // $(".photos .flickr-panel").height(window.innerHeight/2.*0.9);
-                // $(".photos .instagram-panel").height(window.innerHeight/2.*0.9);
+                $(".photos .flickr-panel").height(window.innerHeight/2.*0.9);
+                $(".photos .instagram-panel").height(window.innerHeight/2.*0.9);
             }
 
             setupWriting();
