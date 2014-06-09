@@ -33,14 +33,6 @@ p {
     line-height: 1.5;
 }
 
-@media(min-width:767px) {
-    p {
-        margin: 0 0 35px;
-        font-size: 20px;
-        line-height: 1.6;
-    }
-}
-
 a {
     color: #77BFF2;
     -webkit-transition: all .1s ease-in-out;
@@ -161,17 +153,6 @@ a:focus {
     -o-background-size: cover;
 }
 
-@media(min-width:767px) {
-    .content-section {
-        padding-top: 250px;
-    }
-
-    .download-section {
-        padding: 100px 0;
-    }
-
-}
-
 /* ----------------------------------------------------
     Scrolling stuff
 */
@@ -255,28 +236,6 @@ a:focus {
 .btn-huge {
     padding: 25px;
     font-size: 26px;
-}
-
-.banner-social-buttons {
-    margin-top: 0;
-}
-
-@media(max-width:1199px) {
-    ul.banner-social-buttons {
-        margin-top: 15px;
-    }
-}
-
-@media(max-width:767px) {
-    ul.banner-social-buttons>li {
-        display: block;
-        margin-bottom: 20px;
-        padding: 0;
-    }
-
-    ul.banner-social-buttons>li:last-child {
-        margin-bottom: 0;
-    }
 }
 
 ::-moz-selection {

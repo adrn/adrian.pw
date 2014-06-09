@@ -106,7 +106,7 @@
             <div class="container">
                 <div class="row darken-bg-50">
                     <div class="col-lg-8 col-lg-offset-2 light">
-                        <h1 class="italic">Adrian M. Price-Whelan</h1>
+                        <h2 class="italic">Adrian M. Price-Whelan</h2>
                         <hr width="25%" />
                         <p>NSF graduate research fellow at <a href="http://astro.columbia.edu">Columbia University</a></p>
                         <p>Astrophysicist currently interested in tidal streams and Galactic dynamics</p>
@@ -157,7 +157,6 @@
                         <p class="description">Understanding how tidal streams form and evolve will allow us to measure detailed properties of the Milky Way's gravitational field at large distances and therefore place constraints on the behavior of dark matter on galactic scales.</p>
                     </div>
                     <div class="col-lg-6">
-
                         <div class="canvas-container">
                             <div class="floating-controls">
                                 <i class="fa fa-play fa-btn" id="startStream"></i>&nbsp;&nbsp;&nbsp;&nbsp;
@@ -176,7 +175,6 @@
                         <p class="description">Chaotic orbits are known to be important in the very centers of galaxies, near galactic bars, and in triaxial elliptical systems, but we are interested in the effect of chaos on the formation of tidal streams. This could have significant implications for dynamical inference and inference about the accretion history of galaxies based on observations of substructure.</p>
                     </div>
                     <div class="col-lg-6">
-
                         <div class="canvas-container">
                             <div class="floating-controls">
                                 <i class="fa fa-play fa-btn" id="startChaos"></i><span class="h-spacer-8"></span>
@@ -319,7 +317,17 @@
         $(document).ready(function() {
             $(".full-page").height(window.innerHeight);
             $(".canvas-container").height(window.innerHeight/1.5*0.9);
-            $(".canvas-container").width(window.innerWidth/2*0.95);
+
+            var mq = window.matchMedia('@media all and (max-width: 767px)');
+            if (mq.matches) {
+                // the width of browser is more then 767px
+                $(".canvas-container").width(window.innerWidth/2*0.95);
+            } else {
+                // the width of browser is less then 767px
+                $(".canvas-container").width(window.innerWidth*0.9);
+                // $(".photos .flickr-panel").height(window.innerHeight/2.*0.9);
+                // $(".photos .instagram-panel").height(window.innerHeight/2.*0.9);
+            }
 
             setupWriting();
             setupResearchSections();

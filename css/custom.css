@@ -215,16 +215,19 @@ p.description {
 }
 
 /* Photos */
-.photos, .photos .section-body,
-.photos .container, .photos .row {
-    height: 100%;
-    width: 100%;
-    margin: 0 auto;
+.photos .flickr-panel,
+.photos .instagram-panel {
+    background-repeat: no-repeat;
+    background-attachment: center;
+    background-position: center;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
 }
 
 .photos .float-link {
-    display: table-cell;
-    vertical-align: middle;
+    margin: 0 auto;
 }
 
 .photos .float-link a {
@@ -239,21 +242,67 @@ p.description {
     color: #fff;
 }
 
-.photos .flickr-panel,
-.photos .instagram-panel {
-    display: table;
-    text-align: center;
-    height: 100%;
-    background-repeat: no-repeat;
-    background-attachment: center;
-    background-position: center;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
-}
-
 /* Contact */
 .contact p {
     font-weight: 200;
+}
+
+/*
+    Media queries for other devices
+*/
+@media(min-width: 767px) {
+    .photos, .photos .section-body,
+    .photos .container, .photos .row {
+        height: 100%;
+        width: 100%;
+        margin: 0 auto;
+    }
+
+    .photos .flickr-panel,
+    .photos .instagram-panel {
+        display: table;
+        height: 100%;
+    }
+
+    .photos .float-link {
+        display: table-cell;
+        vertical-align: middle;
+    }
+}
+
+@media(max-width:767px) {
+
+    p {
+        font-size: 12pt;
+    }
+
+    .section-body {
+        padding-top: 50px;
+        margin-top: 100px;
+        border-bottom: 1px solid #333;
+    }
+
+    .intro-text {
+        font-size: 12pt;
+    }
+
+    .intro-text i {
+        margin: 10px;
+    }
+
+    .photos .flickr-panel,
+    .photos .instagram-panel {
+        padding: 0px;
+        margin: 50px 0px 50px 0px ;
+        opacity: 0.5;
+    }
+
+    .photos .float-link a {
+        padding: 2px 25px 10px 25px;
+        font-size: 18pt;
+    }
+
+    .btn {
+        padding: 6px;
+    }
 }
